@@ -13,6 +13,21 @@ class AEndlessRunnerGameMode : public AGameModeBase
 
 public:
 	AEndlessRunnerGameMode();
+
+public:
+	void SpawnTile();
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tiles Configuration", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class AMasterTile> TileClass;
+
+private:
+	FVector NextSpawnPointLocation;
+
 };
 
 
