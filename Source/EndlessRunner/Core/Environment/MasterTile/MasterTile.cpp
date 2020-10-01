@@ -23,14 +23,15 @@ AMasterTile::AMasterTile()
 	// Considering X-axis as forward direction to spawn tiles
 
 	CubeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cube"));
-	CubeMesh->SetupAttachment(Root);
-	CubeMesh->SetWorldRotation(FRotator(90.0f, 0.0f, 0.0f));
-	CubeMesh->SetWorldScale3D(FVector(10.0f, 10.0f, 0.1f));
-	
+	CubeMesh->SetupAttachment(Root);	
 
+	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
+	BoxCollider->SetupAttachment(CubeMesh);
+	// BoxCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	
 	SpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("SpawnPoint"));
 	SpawnPoint->SetupAttachment(CubeMesh);
-	SpawnPoint->SetWorldLocation(FVector(0.0f, -50.0f, 0.0f));
+
 
 	// Left Lane
 	Lane0 = CreateDefaultSubobject<UArrowComponent>(TEXT("Lane0"));
@@ -44,9 +45,6 @@ AMasterTile::AMasterTile()
 	Lane2 = CreateDefaultSubobject<UArrowComponent>(TEXT("Lane2"));
 	Lane2->SetupAttachment(CubeMesh);
 
-	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-	BoxCollider->SetupAttachment(SpawnPoint);
-	BoxCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
 }
 

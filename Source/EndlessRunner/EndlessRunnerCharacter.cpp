@@ -44,9 +44,9 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	NewLane = 0;
 
 	// These are hard coded, later will be fixed using References from current tile
-	LaneY[0] = -300.0f;
-	LaneY[1] =   0.0f;
-	LaneY[2] =  300.0f;
+	LaneY[0] = -330.0f;
+	LaneY[1] =   20.0f;
+	LaneY[2] =  370.0f;
 
 	ChangeLaneSpeed = 100.0f;
 	bShouldSwitch = false;
