@@ -35,6 +35,9 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
+	void MoveLeft();
+	void MoveRight();
+
 protected:
 
 	virtual void Tick(float DeltaTime) override;
@@ -43,10 +46,23 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
 
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
+	float ChangeLaneSpeed;
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+private:
+	int32 Lane;	// Index for current lane, the character is, 0 -> Left, 1 -> Middle, 2 -> Right
+	int32 NewLane;
+	float LaneY[3];
+	bool bShouldSwitch;
+
+private:
+	void LerpBetweenLanes(float DeltaTime);
 };
 

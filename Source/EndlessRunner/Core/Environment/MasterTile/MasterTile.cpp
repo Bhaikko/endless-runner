@@ -24,16 +24,29 @@ AMasterTile::AMasterTile()
 
 	CubeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cube"));
 	CubeMesh->SetupAttachment(Root);
-	CubeMesh->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f));
-	CubeMesh->SetRelativeScale3D(FVector(10.0f, 10.0f, 0.1f));
+	CubeMesh->SetWorldRotation(FRotator(90.0f, 0.0f, 0.0f));
+	CubeMesh->SetWorldScale3D(FVector(10.0f, 10.0f, 0.1f));
+	
 
 	SpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("SpawnPoint"));
 	SpawnPoint->SetupAttachment(CubeMesh);
-	SpawnPoint->SetRelativeLocation(FVector(0.0f, -50.0f, 0.0f));
+	SpawnPoint->SetWorldLocation(FVector(0.0f, -50.0f, 0.0f));
+
+	// Left Lane
+	Lane0 = CreateDefaultSubobject<UArrowComponent>(TEXT("Lane0"));
+	Lane0->SetupAttachment(CubeMesh);
+
+	// Middle Lane
+	Lane1 = CreateDefaultSubobject<UArrowComponent>(TEXT("Lane1"));
+	Lane1->SetupAttachment(CubeMesh);
+
+	// Right lane
+	Lane2 = CreateDefaultSubobject<UArrowComponent>(TEXT("Lane2"));
+	Lane2->SetupAttachment(CubeMesh);
 
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	BoxCollider->SetupAttachment(SpawnPoint);
-	// BoxCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	BoxCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
 }
 
@@ -42,7 +55,13 @@ void AMasterTile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// Binding Overlap Delegate for spawning new tiles
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AMasterTile::TileSpawnHandler);
+
+	
+	
+	
+
 }
 
 // Called every frame
@@ -60,7 +79,6 @@ void AMasterTile::TileSpawnHandler(
 	bool bFromSweep, 
 	const FHitResult& SweepResult
 ) {
-	UE_LOG(LogTemp, Warning, TEXT("Player Collided"));
 	AEndlessRunnerCharacter* CollidedActor = Cast<AEndlessRunnerCharacter>(OtherActor);
 	if (!CollidedActor) {
 		return;
@@ -69,6 +87,15 @@ void AMasterTile::TileSpawnHandler(
 	AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	GameMode->SpawnTile();
 
+	// Binding Destroy Delegate
+	// THE DESTROY DELAY WILL BE BASED ON GAME SPEED LATER
+	GetWorld()->GetTimerManager().SetTimer(DestroyTileHandle, this, &AMasterTile::HandleDestruction, 5.0f, false, 2.0f);
+
+}
+
+void AMasterTile::HandleDestruction() 
+{
+	Destroy();
 }
 
 UArrowComponent* AMasterTile::GetSpawnPoint() const

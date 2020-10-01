@@ -39,8 +39,18 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+	
+	Lane = 1;
+	NewLane = 0;
+
+	// These are hard coded, later will be fixed using References from current tile
+	LaneY[0] = -300.0f;
+	LaneY[1] =   0.0f;
+	LaneY[2] =  300.0f;
+
+	ChangeLaneSpeed = 100.0f;
+	bShouldSwitch = false;
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,7 +64,10 @@ void AEndlessRunnerCharacter::SetupPlayerInputComponent(class UInputComponent* P
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// PlayerInputComponent->BindAxis("MoveForward", this, &AEndlessRunnerCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &AEndlessRunnerCharacter::MoveRight);
+	// PlayerInputComponent->BindAxis("MoveRight", this, &AEndlessRunnerCharacter::MoveRight);
+
+	PlayerInputComponent->BindAction("Left", IE_Pressed, this, &AEndlessRunnerCharacter::MoveLeft);
+	PlayerInputComponent->BindAction("Right", IE_Pressed, this, &AEndlessRunnerCharacter::MoveRight);
 
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AEndlessRunnerCharacter::TouchStarted);
@@ -72,9 +85,55 @@ void AEndlessRunnerCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVecto
 	StopJumping();
 }
 
+void AEndlessRunnerCharacter::MoveLeft() 
+{
+	NewLane = FMath::Clamp<float>(
+		Lane - 1,
+		0,
+		2
+	);
+	
+	bShouldSwitch = true;
+	Lane = NewLane;
+}
+
+void AEndlessRunnerCharacter::MoveRight() 
+{
+	NewLane = FMath::Clamp<float>(
+		Lane + 1,
+		0,
+		2
+	);
+
+	bShouldSwitch = true;
+	Lane = NewLane;
+}
+
+void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime) 
+{
+	FVector CurrentLocation = GetActorLocation();
+	float NewLocationY = LaneY[NewLane];
+	
+	SetActorLocation(FVector(
+		CurrentLocation.X,
+		FMath::FInterpConstantTo(CurrentLocation.Y, NewLocationY, DeltaTime, ChangeLaneSpeed),
+		CurrentLocation.Z
+	));
+
+
+	if (FMath::Abs((NewLocationY - CurrentLocation.Y)) <= 0.01f) {
+		bShouldSwitch = false;
+	} 
+}
+
 void AEndlessRunnerCharacter::Tick(float DeltaTime) 
 {
 	MoveForward(1.0f);
+
+	if (bShouldSwitch) {
+		LerpBetweenLanes(DeltaTime);
+
+	}
 }
 
 void AEndlessRunnerCharacter::MoveForward(float Value)

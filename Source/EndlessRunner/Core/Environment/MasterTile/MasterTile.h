@@ -19,12 +19,24 @@ private:
 	class UStaticMeshComponent* CubeMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
+	class UArrowComponent* Lane0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
+	class UArrowComponent* Lane1;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
+	class UArrowComponent* Lane2;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UArrowComponent* SpawnPoint;
 
 	// Responsible for Spawning Successive tile once player Overlaps this component
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* BoxCollider;
 	
+private:
+	FTimerHandle DestroyTileHandle;
+
 public:	
 	// Sets default values for this actor's properties
 	AMasterTile();
@@ -41,6 +53,9 @@ public:
 private:
 	UFUNCTION()
 	void TileSpawnHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void HandleDestruction();
 
 // Getters
 public:
