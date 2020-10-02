@@ -72,4 +72,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Obstacles")
 	TSubclassOf<class AObstacle> PipeClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacles")
+	TSubclassOf<class AObstacle> BoxClass;
+
 };

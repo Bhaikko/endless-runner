@@ -12,6 +12,7 @@
 #include "EndlessRunner/EndlessRunnerCharacter.h"
 #include "EndlessRunner/EndlessRunnerGameMode.h"
 #include "EndlessRunner/Core/Environment/Obstacle/Pipe/Pipe.h"
+#include "EndlessRunner/Core/Environment/Obstacle/Box/BoxObstacle.h"
 
 
 // Sets default values
@@ -120,8 +121,8 @@ void AMasterTile::SpawnObstacles()
 
 void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane) 
 {
-	if (!PipeClass) {
-		UE_LOG(LogTemp, Warning, TEXT("No Pipe Class Specified."));
+	if (!PipeClass || !BoxClass) {
+		UE_LOG(LogTemp, Warning, TEXT("One of Obstacle Class Missing."));
 		return;
 	}
 
@@ -131,7 +132,7 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 	}
 
 	// Randomly Spawning Obstacle using Random Int 
-	int32 RandomNumber = FMath::RandRange(0, 1);
+	int32 RandomNumber = FMath::RandRange(0, 3);
 	switch (RandomNumber) {
 		case 0:
 			break;
@@ -140,6 +141,16 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 		{
 			APipe* SpawnedPipe = GetWorld()->SpawnActor<APipe>(
 				PipeClass,
+				Lane->GetComponentLocation(),
+				Lane->GetComponentRotation()
+			);
+		}
+		break;
+
+		case 2:
+		{
+			ABoxObstacle* SpawnedBox = GetWorld()->SpawnActor<ABoxObstacle>(
+				BoxClass,
 				Lane->GetComponentLocation(),
 				Lane->GetComponentRotation()
 			);
