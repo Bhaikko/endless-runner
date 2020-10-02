@@ -11,6 +11,7 @@
 
 #include "EndlessRunner/EndlessRunnerCharacter.h"
 #include "EndlessRunner/EndlessRunnerGameMode.h"
+#include "EndlessRunner/Core/Environment/Obstacle/Pipe/Pipe.h"
 
 
 // Sets default values
@@ -58,9 +59,8 @@ void AMasterTile::BeginPlay()
 	// Binding Overlap Delegate for spawning new tiles
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AMasterTile::TileSpawnHandler);
 
-	
-	
-	
+	// Spawning Obstacle 
+	SpawnObstacles();	
 
 }
 
@@ -109,6 +109,46 @@ void AMasterTile::TileSpawnHandler(
 void AMasterTile::HandleDestruction() 
 {
 	Destroy();
+}
+
+void AMasterTile::SpawnObstacles() 
+{
+	SpawnObstacleInLane(Lane0);
+	SpawnObstacleInLane(Lane1);
+	SpawnObstacleInLane(Lane2);
+}
+
+void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane) 
+{
+	if (!PipeClass) {
+		UE_LOG(LogTemp, Warning, TEXT("No Pipe Class Specified."));
+		return;
+	}
+
+	if (!Lane) {
+		UE_LOG(LogTemp, Warning, TEXT("no Lane Found, Intresting"));
+		return;
+	}
+
+	// Randomly Spawning Obstacle using Random Int 
+	int32 RandomNumber = FMath::RandRange(0, 1);
+	switch (RandomNumber) {
+		case 0:
+			break;
+
+		case 1:
+		{
+			APipe* SpawnedPipe = GetWorld()->SpawnActor<APipe>(
+				PipeClass,
+				Lane->GetComponentLocation(),
+				Lane->GetComponentRotation()
+			);
+		}
+		break;
+
+		default:
+			break;
+	}
 }
 
 UArrowComponent* AMasterTile::GetSpawnPoint() const

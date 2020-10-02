@@ -1,7 +1,10 @@
 {
 	"files.exclude": {
+		"D:/Unreal/EndlessRunner/.git": true,
 		"D:/Unreal/EndlessRunner/.vscode": true,
 		"D:/Unreal/EndlessRunner/Content": true,
-		"D:/Unreal/EndlessRunner/Intermediate": true
+		"D:/Unreal/EndlessRunner/DerivedDataCache": true,
+		"D:/Unreal/EndlessRunner/Intermediate": true,
+		"D:/Unreal/EndlessRunner/Saved": true
 	}
 }

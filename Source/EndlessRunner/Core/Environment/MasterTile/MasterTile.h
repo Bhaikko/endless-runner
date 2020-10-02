@@ -54,11 +54,22 @@ private:
 	UFUNCTION()
 	void TileSpawnHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	UFUNCTION()
-	void HandleDestruction();
-
 // Getters
 public:
 	UArrowComponent* GetSpawnPoint() const;
+
+private:
+	UFUNCTION()
+	void HandleDestruction();
+
+	UFUNCTION()
+	void SpawnObstacles();
+
+	UFUNCTION()
+	void SpawnObstacleInLane(UArrowComponent* Lane);
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacles")
+	TSubclassOf<class AObstacle> PipeClass;
 
 };
