@@ -11,6 +11,7 @@ class AEndlessRunnerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+private:
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
@@ -18,6 +19,8 @@ class AEndlessRunnerCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	
 public:
 	AEndlessRunnerCharacter();
 
@@ -39,6 +42,8 @@ protected:
 	void MoveRight();
 
 protected:
+
+	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
 
@@ -64,5 +69,6 @@ private:
 
 private:
 	void LerpBetweenLanes(float DeltaTime);
+
 };
 

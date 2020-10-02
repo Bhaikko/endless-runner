@@ -28,6 +28,17 @@ private:
 private:
 	FVector NextSpawnPointLocation;
 
+	// Point System, Everytime player runs over tile, it scores a Point
+	int32 Points;
+	int32 PointsMultiplier;
+
+public:
+	void IncreaseScore(int32 ScoreToAdd);
+
+public:
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE int32 GetScore() const { return Points; }
+
 };
 
 

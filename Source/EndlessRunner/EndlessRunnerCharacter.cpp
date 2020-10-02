@@ -53,9 +53,14 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 
 }
 
+void AEndlessRunnerCharacter::BeginPlay() 
+{
+	Super::BeginPlay();
+
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
-
 void AEndlessRunnerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up gameplay key bindings
@@ -164,3 +169,4 @@ void AEndlessRunnerCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+

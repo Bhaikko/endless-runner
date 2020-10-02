@@ -17,6 +17,8 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 	}
 
 	NextSpawnPointLocation = FVector(0.0f, 0.0f, 0.0f);
+	Points = 0;
+	PointsMultiplier = 1;
 }
 
 void AEndlessRunnerGameMode::BeginPlay() 
@@ -24,6 +26,11 @@ void AEndlessRunnerGameMode::BeginPlay()
 	for (uint32 i = 1; i <= 10; i++) {
 		SpawnTile();
 	}	
+}
+
+void AEndlessRunnerGameMode::IncreaseScore(int32 ScoreToAdd) 
+{
+	Points += (ScoreToAdd * PointsMultiplier);
 }
 
 void AEndlessRunnerGameMode::SpawnTile() 

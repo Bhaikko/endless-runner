@@ -7,9 +7,11 @@
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "EndlessRunner/EndlessRunnerCharacter.h"
 #include "EndlessRunner/EndlessRunnerGameMode.h"
+
 
 // Sets default values
 AMasterTile::AMasterTile()
@@ -85,9 +87,22 @@ void AMasterTile::TileSpawnHandler(
 	AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	GameMode->SpawnTile();
 
+	// Increaing Score
+	GameMode->IncreaseScore(1);
+
+	// Increasing Speed of Character
+	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(CollidedActor->GetMovementComponent());
+	if (CharacterMovementComponent) {
+		CharacterMovementComponent->MaxWalkSpeed = FMath::Clamp<float>(
+			CharacterMovementComponent->MaxWalkSpeed * 2.01,
+			600.0f,
+			1200.0f
+		);
+	}
+
 	// Binding Destroy Delegate
 	// THE DESTROY DELAY WILL BE BASED ON GAME SPEED LATER
-	GetWorld()->GetTimerManager().SetTimer(DestroyTileHandle, this, &AMasterTile::HandleDestruction, 5.0f, false, 2.0f);
+	GetWorld()->GetTimerManager().SetTimer(DestroyTileHandle, this, &AMasterTile::HandleDestruction, 5.0f);
 
 }
 
