@@ -75,4 +75,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Obstacles")
 	TSubclassOf<class AObstacle> BoxClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
+	TSubclassOf<class APickup> CoinClass;
+
 };

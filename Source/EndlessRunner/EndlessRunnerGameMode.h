@@ -31,13 +31,18 @@ private:
 	// Point System, Everytime player runs over tile, it scores a Point
 	int32 Points;
 	int32 PointsMultiplier;
+	int32 Coins;
 
 public:
 	void IncreaseScore(int32 ScoreToAdd);
+	void IncreaseCoins(int32 CoinsToAdd);
 
 public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE int32 GetScore() const { return Points; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE int32 GetCoins() const { return Coins; }
 
 };
 

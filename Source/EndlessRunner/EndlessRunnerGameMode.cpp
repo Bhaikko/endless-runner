@@ -9,16 +9,11 @@
 
 AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 {
-	// set default pawn class to our Blueprinted character
-	// static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
-	// if (PlayerPawnBPClass.Class != NULL)
-	// {
-	// 	DefaultPawnClass = PlayerPawnBPClass.Class;
-	// }
 
 	NextSpawnPointLocation = FVector(0.0f, 0.0f, 0.0f);
 	Points = 0;
 	PointsMultiplier = 1;
+	Coins = 0;
 }
 
 void AEndlessRunnerGameMode::BeginPlay() 
@@ -31,6 +26,11 @@ void AEndlessRunnerGameMode::BeginPlay()
 void AEndlessRunnerGameMode::IncreaseScore(int32 ScoreToAdd) 
 {
 	Points += (ScoreToAdd * PointsMultiplier);
+}
+
+void AEndlessRunnerGameMode::IncreaseCoins(int32 CoinsToAdd) 
+{
+	Coins += CoinsToAdd;
 }
 
 void AEndlessRunnerGameMode::SpawnTile() 
