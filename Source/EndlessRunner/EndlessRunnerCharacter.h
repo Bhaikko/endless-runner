@@ -70,5 +70,8 @@ private:
 private:
 	void LerpBetweenLanes(float DeltaTime);
 
+public:
+	void HandleDeath();
+
 };
 

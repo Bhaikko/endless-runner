@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/PrimitiveComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AEndlessRunnerCharacter
@@ -129,6 +130,16 @@ void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime)
 	if (FMath::Abs((NewLocationY - CurrentLocation.Y)) <= 0.01f) {
 		bShouldSwitch = false;
 	} 
+}
+
+void AEndlessRunnerCharacter::HandleDeath() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Delete"));
+
+	GetMesh()->SetSimulatePhysics(true);
+	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
+	CharacterMovementComponent->DisableMovement();
+	
 }
 
 void AEndlessRunnerCharacter::Tick(float DeltaTime) 

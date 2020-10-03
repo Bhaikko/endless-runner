@@ -6,6 +6,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
 
+#include "EndlessRunner/EndlessRunnerCharacter.h"
+
 // Sets default values
 AObstacle::AObstacle()
 {
@@ -17,6 +19,7 @@ AObstacle::AObstacle()
 
 	ObstacleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Obstacle Mesh"));
 	ObstacleMesh->SetupAttachment(Root);
+	ObstacleMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
 }
 
@@ -24,6 +27,8 @@ AObstacle::AObstacle()
 void AObstacle::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ObstacleMesh->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OnHit);
 	
 }
 
@@ -32,5 +37,15 @@ void AObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AObstacle::OnHit(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
+{
+	AEndlessRunnerCharacter* CollidedActor = Cast<AEndlessRunnerCharacter>(OtherActor);
+	if (!CollidedActor) {
+		return;
+	}
+
+	CollidedActor->HandleDeath();
 }
 
