@@ -15,6 +15,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "User Interface")
 	TSubclassOf<class UUserWidget> HUDClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "User Interface")
+	TSubclassOf<class UUserWidget> GameOverClass;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -22,7 +25,13 @@ private:
 	UPROPERTY()
 	class UUserWidget* HUDClassWidget;
 
+	UPROPERTY()
+	class UUserWidget* GameOverClassWidget;
+
 private:
 	void SetupHUD();
+
+public:
+	void ShowGameOverWidget();
 	
 };

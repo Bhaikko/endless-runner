@@ -10,6 +10,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/PrimitiveComponent.h"
 
+#include "EndlessRunner/Core/Controllers/RunnerPlayerController.h"
+
 //////////////////////////////////////////////////////////////////////////
 // AEndlessRunnerCharacter
 
@@ -139,7 +141,14 @@ void AEndlessRunnerCharacter::HandleDeath()
 	GetMesh()->SetSimulatePhysics(true);
 	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
 	CharacterMovementComponent->DisableMovement();
-	
+
+	ARunnerPlayerController* RunnerController = Cast<ARunnerPlayerController>(Controller);
+	if (!RunnerController) {
+		return;
+	}
+
+	RunnerController->ShowGameOverWidget();
+	RunnerController->bShowMouseCursor = true;
 }
 
 void AEndlessRunnerCharacter::Tick(float DeltaTime) 

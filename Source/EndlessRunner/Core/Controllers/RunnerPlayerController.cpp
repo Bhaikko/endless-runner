@@ -21,4 +21,17 @@ void ARunnerPlayerController::SetupHUD()
 
 	HUDClassWidget = CreateWidget(this, HUDClass);
 	HUDClassWidget->AddToViewport();
+
+}
+
+void ARunnerPlayerController::ShowGameOverWidget() 
+{
+	if (!GameOverClass) {
+		UE_LOG(LogTemp, Warning, TEXT("No Gameover class assigned"));
+		return;
+	}
+
+	GameOverClassWidget = CreateWidget(this, GameOverClass);
+	GameOverClassWidget->AddToViewport();
+	
 }
