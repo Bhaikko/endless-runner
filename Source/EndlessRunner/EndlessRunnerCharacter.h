@@ -62,6 +62,8 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	FORCEINLINE bool IsMagnetActive() const { return bMagnetActive; }
+
 private:
 	int32 Lane;	// Index for current lane, the character is, 0 -> Left, 1 -> Middle, 2 -> Right
 	int32 NewLane;

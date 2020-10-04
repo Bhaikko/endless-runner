@@ -30,7 +30,6 @@ void AMagnet::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* O
 
     CollidedActor->SetMagnetStatus(true);
 
-    UE_LOG(LogTemp, Warning, TEXT("Magnet Active"));
 
     FTimerHandle PickupDurationHandle;
     GetWorld()->GetTimerManager().SetTimer(PickupDurationHandle, this, &AMagnet::DisableAbility, PickupDuration);
@@ -48,7 +47,6 @@ void AMagnet::DisableAbility()
 	}
 
     RunnerCharacter->SetMagnetStatus(false);
-    UE_LOG(LogTemp, Warning, TEXT("Magnet deactivated"));
 
     Destroy();
 }
