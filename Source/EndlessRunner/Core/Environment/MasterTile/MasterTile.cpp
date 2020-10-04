@@ -134,53 +134,32 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 	}
 
 	// Randomly Spawning Obstacle using Random Int 
-	int32 RandomNumber = FMath::RandRange(0, 6);
-	switch (RandomNumber) {
-		case 0:
-			break;
+	float ChanceOfSpawning = FMath::RandRange(0.0f, 1.0f);
 
-		case 1:
-		{
-			APipe* SpawnedPipe = GetWorld()->SpawnActor<APipe>(
-				PipeClass,
-				Lane->GetComponentLocation(),
-				Lane->GetComponentRotation()
-			);
-		}
-		break;
-
-		case 2:
-		{
-			ABoxObstacle* SpawnedBox = GetWorld()->SpawnActor<ABoxObstacle>(
-				BoxClass,
-				Lane->GetComponentLocation(),
-				Lane->GetComponentRotation()
-			);
-		}
-		break;
-
-		case 3:
-		{
-			ACoin* SpawnedBox = GetWorld()->SpawnActor<ACoin>(
-				CoinClass,
-				Lane->GetComponentLocation(),
-				Lane->GetComponentRotation()
-			);
-		}
-		break;
-
-		case 4:
-		{
-			AMagnet* SpawnedBox = GetWorld()->SpawnActor<AMagnet>(
-				MagnetClass,
-				Lane->GetComponentLocation(),
-				Lane->GetComponentRotation()
-			);
-		}
-		break;
-
-		default:
-			break;
+	if (ChanceOfSpawning >= 0.0f && ChanceOfSpawning <= 0.4f) {
+		APipe* SpawnedPipe = GetWorld()->SpawnActor<APipe>(
+			PipeClass,
+			Lane->GetComponentLocation(),
+			Lane->GetComponentRotation()
+		);
+	} else if (ChanceOfSpawning > 0.4f && ChanceOfSpawning <= 0.5f) {
+		ABoxObstacle* SpawnedBox = GetWorld()->SpawnActor<ABoxObstacle>(
+			BoxClass,
+			Lane->GetComponentLocation(),
+			Lane->GetComponentRotation()
+		);
+	} else if (ChanceOfSpawning > 0.5f && ChanceOfSpawning <= 0.9f) {
+		ACoin* SpawnedBox = GetWorld()->SpawnActor<ACoin>(
+			CoinClass,
+			Lane->GetComponentLocation(),
+			Lane->GetComponentRotation()
+		);
+	} else {
+		AMagnet* SpawnedBox = GetWorld()->SpawnActor<AMagnet>(
+			MagnetClass,
+			Lane->GetComponentLocation(),
+			Lane->GetComponentRotation()
+		);
 	}
 }
 
