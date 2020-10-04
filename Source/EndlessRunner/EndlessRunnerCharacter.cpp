@@ -9,8 +9,10 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/PrimitiveComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "EndlessRunner/Core/Controllers/RunnerPlayerController.h"
+#include "EndlessRunner/EndlessRunnerGameMode.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AEndlessRunnerCharacter
@@ -136,7 +138,6 @@ void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime)
 
 void AEndlessRunnerCharacter::HandleDeath() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("Delete"));
 
 	GetMesh()->SetSimulatePhysics(true);
 	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
@@ -149,6 +150,11 @@ void AEndlessRunnerCharacter::HandleDeath()
 
 	RunnerController->ShowGameOverWidget();
 	RunnerController->bShowMouseCursor = true;
+
+	// Save game Handling
+	AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	GameMode->TrySetNewHighScore();
+
 }
 
 void AEndlessRunnerCharacter::Tick(float DeltaTime) 

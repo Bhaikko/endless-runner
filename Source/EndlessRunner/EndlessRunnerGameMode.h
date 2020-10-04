@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "EndlessRunner/Core/Resources/SaveGameHandler/SaveGameHandler.h"
 #include "EndlessRunnerGameMode.generated.h"
 
 UCLASS(minimalapi)
@@ -36,6 +37,7 @@ private:
 public:
 	void IncreaseScore(int32 ScoreToAdd);
 	void IncreaseCoins(int32 CoinsToAdd);
+	void TrySetNewHighScore();
 
 public:
 	UFUNCTION(BlueprintPure)
@@ -43,6 +45,16 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE int32 GetCoins() const { return Coins; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE int32 GetHighScore() const { return SaveGameHandler->GetHighScore(); }
+
+private:
+	ASaveGameHandler* SaveGameHandler;
+
+private:
+	UFUNCTION()
+	void FindReferenceOfSaveGameHandler();
 
 };
 

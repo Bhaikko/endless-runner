@@ -4,12 +4,13 @@
 #include "EndlessRunnerCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
-#include "EndlessRunner/Core/Environment/MasterTile/MasterTile.h"
 #include "Components/ArrowComponent.h"
+#include "Kismet/GameplayStatics.h"
+
+#include "EndlessRunner/Core/Environment/MasterTile/MasterTile.h"
 
 AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 {
-
 	NextSpawnPointLocation = FVector(0.0f, 0.0f, 0.0f);
 	Points = 0;
 	PointsMultiplier = 1;
@@ -21,6 +22,9 @@ void AEndlessRunnerGameMode::BeginPlay()
 	for (uint32 i = 1; i <= 10; i++) {
 		SpawnTile();
 	}	
+
+	FindReferenceOfSaveGameHandler();
+	UE_LOG(LogTemp, Warning, TEXT("HighScore: %d"), SaveGameHandler->GetHighScore());
 }
 
 void AEndlessRunnerGameMode::IncreaseScore(int32 ScoreToAdd) 
@@ -31,6 +35,25 @@ void AEndlessRunnerGameMode::IncreaseScore(int32 ScoreToAdd)
 void AEndlessRunnerGameMode::IncreaseCoins(int32 CoinsToAdd) 
 {
 	Coins += CoinsToAdd;
+}
+
+void AEndlessRunnerGameMode::TrySetNewHighScore() 
+{
+	SaveGameHandler->TrySetNewHighScore(Points);
+
+	UE_LOG(LogTemp, Warning, TEXT("HighScore: %d"), SaveGameHandler->GetHighScore());
+}
+
+void AEndlessRunnerGameMode::FindReferenceOfSaveGameHandler() 
+{
+	TArray<AActor*> SaveGameHandlers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASaveGameHandler::StaticClass(), SaveGameHandlers);
+
+	if (SaveGameHandlers.Num() == 0) {
+		UE_LOG(LogTemp, Warning, TEXT("Error Finding Save game"));
+	} else {
+		SaveGameHandler = Cast<ASaveGameHandler>(SaveGameHandlers[0]);
+	}
 }
 
 void AEndlessRunnerGameMode::SpawnTile() 
