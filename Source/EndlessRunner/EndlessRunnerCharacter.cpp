@@ -76,6 +76,7 @@ void AEndlessRunnerCharacter::SetupPlayerInputComponent(class UInputComponent* P
 	// PlayerInputComponent->BindAxis("MoveForward", this, &AEndlessRunnerCharacter::MoveForward);
 	// PlayerInputComponent->BindAxis("MoveRight", this, &AEndlessRunnerCharacter::MoveRight);
 
+	PlayerInputComponent->BindAction("Down", IE_Pressed, this, &AEndlessRunnerCharacter::MoveDown);
 	PlayerInputComponent->BindAction("Left", IE_Pressed, this, &AEndlessRunnerCharacter::MoveLeft);
 	PlayerInputComponent->BindAction("Right", IE_Pressed, this, &AEndlessRunnerCharacter::MoveRight);
 
@@ -194,5 +195,12 @@ void AEndlessRunnerCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void AEndlessRunnerCharacter::MoveDown() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Inside"));
+	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
+	CharacterMovementComponent->AddImpulse(FVector(0.0f, 0.0f, -3000.0f), true);
 }
 

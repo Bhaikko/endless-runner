@@ -40,6 +40,7 @@ protected:
 
 	void MoveLeft();
 	void MoveRight();
+	void MoveDown();
 
 protected:
 
