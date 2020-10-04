@@ -40,6 +40,9 @@ void APickup::Tick(float DeltaTime)
 
 void APickup::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
 {
+	PickupMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	PickupMesh->SetVisibility(false);
+
 	if (!PickupSound) {
 		UE_LOG(LogTemp, Warning, TEXT("No Pickup sound assigned"));
 	} else {
@@ -52,7 +55,7 @@ void APickup::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* O
 		);
 	}
 
-
-	Destroy();
+	// Give the child of this class to decide when to destroy the actor
+	// Destroy();
 }
 

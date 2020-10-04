@@ -68,11 +68,15 @@ private:
 	float LaneY[3];
 	bool bShouldSwitch;
 
+	// Pickup Statistics
+	bool bMagnetActive;
+
 private:
 	void LerpBetweenLanes(float DeltaTime);
 
 public:
 	void HandleDeath();
+	void SetMagnetStatus(bool bStatus);
 
 };
 

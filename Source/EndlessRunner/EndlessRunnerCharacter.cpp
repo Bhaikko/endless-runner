@@ -56,6 +56,8 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	ChangeLaneSpeed = 100.0f;
 	bShouldSwitch = false;
 
+	bMagnetActive = false;
+
 }
 
 void AEndlessRunnerCharacter::BeginPlay() 
@@ -158,6 +160,11 @@ void AEndlessRunnerCharacter::HandleDeath()
 
 }
 
+void AEndlessRunnerCharacter::SetMagnetStatus(bool bStatus) 
+{
+	bMagnetActive = bStatus;
+}
+
 void AEndlessRunnerCharacter::Tick(float DeltaTime) 
 {
 	MoveForward(1.0f);
@@ -199,7 +206,6 @@ void AEndlessRunnerCharacter::MoveRight(float Value)
 
 void AEndlessRunnerCharacter::MoveDown() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("Inside"));
 	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
 	CharacterMovementComponent->AddImpulse(FVector(0.0f, 0.0f, -3000.0f), true);
 }

@@ -31,4 +31,5 @@ void ACoin::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* Oth
         return;
     }
     GameMode->IncreaseCoins(1);
+    Destroy();
 }

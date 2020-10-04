@@ -14,6 +14,7 @@
 #include "EndlessRunner/Core/Environment/Obstacle/Pipe/Pipe.h"
 #include "EndlessRunner/Core/Environment/Obstacle/Box/BoxObstacle.h"
 #include "EndlessRunner/Core/Environment/Pickup/Coin/Coin.h"
+#include "EndlessRunner/Core/Environment/Pickup/Magnet/Magnet.h"
 
 
 // Sets default values
@@ -133,7 +134,7 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 	}
 
 	// Randomly Spawning Obstacle using Random Int 
-	int32 RandomNumber = FMath::RandRange(0, 4);
+	int32 RandomNumber = FMath::RandRange(0, 6);
 	switch (RandomNumber) {
 		case 0:
 			break;
@@ -162,6 +163,16 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 		{
 			ACoin* SpawnedBox = GetWorld()->SpawnActor<ACoin>(
 				CoinClass,
+				Lane->GetComponentLocation(),
+				Lane->GetComponentRotation()
+			);
+		}
+		break;
+
+		case 4:
+		{
+			AMagnet* SpawnedBox = GetWorld()->SpawnActor<AMagnet>(
+				MagnetClass,
 				Lane->GetComponentLocation(),
 				Lane->GetComponentRotation()
 			);
