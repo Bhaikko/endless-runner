@@ -15,6 +15,7 @@
 #include "EndlessRunner/Core/Environment/Obstacle/Box/BoxObstacle.h"
 #include "EndlessRunner/Core/Environment/Pickup/Coin/Coin.h"
 #include "EndlessRunner/Core/Environment/Pickup/Magnet/Magnet.h"
+#include "EndlessRunner/Core/Environment/Pickup/JumpBoots/JumpBoots.h"
 
 
 // Sets default values
@@ -123,7 +124,7 @@ void AMasterTile::SpawnObstacles()
 
 void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane) 
 {
-	if (!PipeClass || !BoxClass || !CoinClass) {
+	if (!PipeClass || !BoxClass || !CoinClass || !MagnetClass || !JumpBootClass) {
 		UE_LOG(LogTemp, Warning, TEXT("One of Obstacle or Pickup Class Missing."));
 		return;
 	}
@@ -149,14 +150,20 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 			Lane->GetComponentRotation()
 		);
 	} else if (ChanceOfSpawning > 0.5f && ChanceOfSpawning <= 0.9f) {
-		ACoin* SpawnedBox = GetWorld()->SpawnActor<ACoin>(
+		ACoin* SpawnedCoin = GetWorld()->SpawnActor<ACoin>(
 			CoinClass,
 			Lane->GetComponentLocation(),
 			Lane->GetComponentRotation()
 		);
-	} else {
-		AMagnet* SpawnedBox = GetWorld()->SpawnActor<AMagnet>(
+	} else if (ChanceOfSpawning > 0.9f && ChanceOfSpawning <= 0.95f) {
+		AMagnet* SpawnedMagnet = GetWorld()->SpawnActor<AMagnet>(
 			MagnetClass,
+			Lane->GetComponentLocation(),
+			Lane->GetComponentRotation()
+		);
+	} else if (ChanceOfSpawning > 0.95f && ChanceOfSpawning <= 1.00f) {
+		AJumpBoots* SpawnedMagnet = GetWorld()->SpawnActor<AJumpBoots>(
+			JumpBootClass,
 			Lane->GetComponentLocation(),
 			Lane->GetComponentRotation()
 		);

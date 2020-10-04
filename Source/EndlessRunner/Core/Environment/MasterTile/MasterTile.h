@@ -81,4 +81,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
 	TSubclassOf<class APickup> MagnetClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
+	TSubclassOf<class APickup> JumpBootClass;
+
 };
