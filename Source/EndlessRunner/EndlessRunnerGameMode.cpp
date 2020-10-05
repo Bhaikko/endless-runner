@@ -24,7 +24,6 @@ void AEndlessRunnerGameMode::BeginPlay()
 	}	
 
 	FindReferenceOfSaveGameHandler();
-	UE_LOG(LogTemp, Warning, TEXT("HighScore: %d"), SaveGameHandler->GetHighScore());
 }
 
 void AEndlessRunnerGameMode::IncreaseScore(int32 ScoreToAdd) 
@@ -53,6 +52,7 @@ void AEndlessRunnerGameMode::FindReferenceOfSaveGameHandler()
 		UE_LOG(LogTemp, Warning, TEXT("Error Finding Save game"));
 	} else {
 		SaveGameHandler = Cast<ASaveGameHandler>(SaveGameHandlers[0]);
+		UE_LOG(LogTemp, Warning, TEXT("HighScore: %d"), SaveGameHandler->GetHighScore());
 	}
 }
 
