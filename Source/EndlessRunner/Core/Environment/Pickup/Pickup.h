@@ -10,6 +10,10 @@ UCLASS()
 class ENDLESSRUNNER_API APickup : public AActor
 {
 	GENERATED_BODY()
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+	float PickupDuration;
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
@@ -42,5 +46,6 @@ protected:
 	UFUNCTION()
 	virtual void OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-
+	UFUNCTION()
+	virtual void OnDisableAbility();
 };

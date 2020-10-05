@@ -22,12 +22,7 @@ protected:
 
 	virtual void OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
-protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
-	float PickupDuration;
-
 private:
-	UFUNCTION()
-	void DisableAbility();
+	virtual void OnDisableAbility() override;
 	
 };

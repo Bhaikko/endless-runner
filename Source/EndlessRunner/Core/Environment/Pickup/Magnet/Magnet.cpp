@@ -11,7 +11,7 @@
 
 AMagnet::AMagnet() 
 {
-    PickupDuration = 10.0f;   
+     
 }
 
 void AMagnet::BeginPlay() 
@@ -32,14 +32,14 @@ void AMagnet::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* O
 
 
     FTimerHandle PickupDurationHandle;
-    GetWorld()->GetTimerManager().SetTimer(PickupDurationHandle, this, &AMagnet::DisableAbility, PickupDuration);
+    GetWorld()->GetTimerManager().SetTimer(PickupDurationHandle, this, &AMagnet::OnDisableAbility, PickupDuration);
 
     Super::OnPickup(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 
 
 }
 
-void AMagnet::DisableAbility() 
+void AMagnet::OnDisableAbility() 
 {
     AEndlessRunnerCharacter* RunnerCharacter = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!RunnerCharacter) {
@@ -48,5 +48,5 @@ void AMagnet::DisableAbility()
 
     RunnerCharacter->SetMagnetStatus(false);
 
-    Destroy();
+    Super::OnDisableAbility();
 }

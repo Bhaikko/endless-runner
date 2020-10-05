@@ -34,7 +34,6 @@ void ACoin::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* Oth
 		return;
 	}
 
-    Super::OnPickup(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 
     AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
     if (!GameMode) {
@@ -42,7 +41,10 @@ void ACoin::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* Oth
         return;
     }
     GameMode->IncreaseCoins(1);
-    Destroy();
+
+    Super::OnPickup(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+    OnDisableAbility();
+
 }
 
 void ACoin::Tick(float DeltaTime) 

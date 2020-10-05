@@ -11,7 +11,7 @@
 
 AJumpBoots::AJumpBoots() 
 {
-    PickupDuration = 10.0f;   
+    
 }
 
 void AJumpBoots::BeginPlay() 
@@ -33,23 +33,25 @@ void AJumpBoots::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor
 
 
     FTimerHandle PickupDurationHandle;
-    GetWorld()->GetTimerManager().SetTimer(PickupDurationHandle, this, &AJumpBoots::DisableAbility, PickupDuration);
+    GetWorld()->GetTimerManager().SetTimer(PickupDurationHandle, this, &AJumpBoots::OnDisableAbility, PickupDuration);
 
     Super::OnPickup(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 
 
 }
 
-void AJumpBoots::DisableAbility() 
+void AJumpBoots::OnDisableAbility() 
 {
     AEndlessRunnerCharacter* RunnerCharacter = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!RunnerCharacter) {
 		return;
 	}
 
-    UCharacterMovementComponent* MovementComponent = Cast<UCharacterMovementComponent>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+    UCharacterMovementComponent* MovementComponent = Cast<UCharacterMovementComponent>(RunnerCharacter->GetMovementComponent());
+    if (!MovementComponent) {
+        return;
+    }
     MovementComponent->JumpZVelocity = 600.0f;
 
-
-    Destroy();
+    Super::OnDisableAbility();
 }

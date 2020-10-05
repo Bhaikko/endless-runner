@@ -64,7 +64,10 @@ void AMasterTile::BeginPlay()
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AMasterTile::TileSpawnHandler);
 
 	// Spawning Obstacle 
-	SpawnObstacles();	
+	AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GameMode->GetScore() >= 2) {
+		SpawnObstacles();	
+	}
 
 }
 

@@ -22,6 +22,8 @@ APickup::APickup()
 
 	RotatingMovementComponent = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("Rotating Movement Component"));
 
+	PickupDuration = 0.0f;
+
 }
 
 // Called when the game starts or when spawned
@@ -54,8 +56,13 @@ void APickup::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* O
 			0.0f
 		);
 	}
+}
 
-	// Give the child of this class to decide when to destroy the actor
-	// Destroy();
+void APickup::OnDisableAbility() 
+{
+	if (!IsPendingKill()) {
+		UE_LOG(LogTemp, Warning, TEXT("Destroying"));
+		Destroy();
+	}
 }
 
