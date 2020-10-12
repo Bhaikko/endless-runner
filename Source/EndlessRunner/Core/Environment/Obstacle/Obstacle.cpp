@@ -5,6 +5,7 @@
 
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/SceneComponent.h"
+#include "Components/CapsuleComponent.h"
 
 #include "EndlessRunner/EndlessRunnerCharacter.h"
 
@@ -17,9 +18,13 @@ AObstacle::AObstacle()
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
 
+	CapsuleCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Collider"));
+	CapsuleCollider->SetupAttachment(Root);
+	
 	ObstacleMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Obstacle Mesh"));
 	ObstacleMesh->SetupAttachment(Root);
 	ObstacleMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
 
 }
 
@@ -45,6 +50,8 @@ void AObstacle::OnHit(UPrimitiveComponent* OverlappedComponent, class AActor* Ot
 	if (!CollidedActor) {
 		return;
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Inside"));
 
 	CollidedActor->HandleDeath();
 }

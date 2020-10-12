@@ -54,7 +54,11 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	LaneY[2] =  370.0f;
 
 	ChangeLaneSpeed = 100.0f;
+	SlideDuration = 1.0f;
+
 	bShouldSwitch = false;
+
+	bSlide = false;
 
 	bMagnetActive = false;
 
@@ -139,6 +143,11 @@ void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime)
 	} 
 }
 
+void AEndlessRunnerCharacter::CancelSlide() 
+{
+	bSlide = false;
+}
+
 void AEndlessRunnerCharacter::HandleDeath() 
 {
 
@@ -206,7 +215,23 @@ void AEndlessRunnerCharacter::MoveRight(float Value)
 
 void AEndlessRunnerCharacter::MoveDown() 
 {
+	
 	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
-	CharacterMovementComponent->AddImpulse(FVector(0.0f, 0.0f, -3000.0f), true);
+
+	if (CharacterMovementComponent->IsFalling()) {
+		CharacterMovementComponent->AddImpulse(FVector(0.0f, 0.0f, -3000.0f), true);
+	} else {
+		bSlide = true;
+		FTimerHandle SlideCancelHandler;
+
+		GetWorld()->GetTimerManager().SetTimer(SlideCancelHandler, this, &AEndlessRunnerCharacter::CancelSlide, SlideDuration);
+	}
 }
+
+void AEndlessRunnerCharacter::Jump() 
+{
+	bSlide = false;
+	Super::Jump();
+}
+
 

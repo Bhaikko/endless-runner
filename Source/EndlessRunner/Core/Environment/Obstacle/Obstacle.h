@@ -12,8 +12,12 @@ class ENDLESSRUNNER_API AObstacle : public AActor
 	GENERATED_BODY()
 
 protected:
+
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
 	class USceneComponent* Root;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Collision")
+	class UCapsuleComponent* CapsuleCollider;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
 	class USkeletalMeshComponent* ObstacleMesh;

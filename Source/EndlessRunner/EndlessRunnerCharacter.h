@@ -42,6 +42,8 @@ protected:
 	void MoveRight();
 	void MoveDown();
 
+	virtual void Jump() override;
+
 protected:
 
 	virtual void BeginPlay() override;
@@ -56,6 +58,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
 	float ChangeLaneSpeed;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
+	float SlideDuration;
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -64,17 +69,25 @@ public:
 
 	FORCEINLINE bool IsMagnetActive() const { return bMagnetActive; }
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool IsSliding() const { return bSlide; }
+
 private:
 	int32 Lane;	// Index for current lane, the character is, 0 -> Left, 1 -> Middle, 2 -> Right
 	int32 NewLane;
 	float LaneY[3];
 	bool bShouldSwitch;
 
+	bool bSlide;
+
 	// Pickup Statistics
 	bool bMagnetActive;
 
 private:
 	void LerpBetweenLanes(float DeltaTime);
+
+	UFUNCTION()
+	void CancelSlide();
 
 public:
 	void HandleDeath();

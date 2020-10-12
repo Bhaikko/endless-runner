@@ -143,6 +143,7 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 	// Randomly Spawning Obstacle using Random Int 
 	float ChanceOfSpawning = FMath::RandRange(0.0f, 1.0f);
 
+
 	if (ChanceOfSpawning >= 0.0f && ChanceOfSpawning <= 0.2f) {
 		AObstacle* SpawnedPipe = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::RUNNER],
