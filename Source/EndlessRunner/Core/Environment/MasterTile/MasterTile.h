@@ -70,18 +70,25 @@ private:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Obstacles")
-	TSubclassOf<class AObstacle> PipeClass;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Obstacles")
-	TSubclassOf<class AObstacle> BoxClass;
+	TArray<TSubclassOf<class AObstacle>> ObstacleClasses;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
-	TSubclassOf<class APickup> CoinClass;
+	TArray<TSubclassOf<class APickup>> PickupClasses;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
-	TSubclassOf<class APickup> MagnetClass;
+private:
+	enum EObstacle 
+	{
+		RUNNER = 0,
+		STONEGUY,
+		HANDS
+	};
 
-	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
-	TSubclassOf<class APickup> JumpBootClass;
+	enum EPickup
+	{
+		COIN = 0,
+		MAGNET,
+		BOOTS
+	};
+	
 
 };

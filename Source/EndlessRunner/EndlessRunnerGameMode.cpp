@@ -38,7 +38,7 @@ void AEndlessRunnerGameMode::IncreaseCoins(int32 CoinsToAdd)
 
 void AEndlessRunnerGameMode::TrySetNewHighScore() 
 {
-	SaveGameHandler->TrySetNewHighScore(Points);
+	// SaveGameHandler->TrySetNewHighScore(Points);
 
 	UE_LOG(LogTemp, Warning, TEXT("HighScore: %d"), SaveGameHandler->GetHighScore());
 }
