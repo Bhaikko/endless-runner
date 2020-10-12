@@ -20,10 +20,10 @@ AObstacle::AObstacle()
 
 	CapsuleCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Collider"));
 	CapsuleCollider->SetupAttachment(Root);
+	CapsuleCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	
 	ObstacleMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Obstacle Mesh"));
 	ObstacleMesh->SetupAttachment(Root);
-	ObstacleMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
 
 }
@@ -33,7 +33,7 @@ void AObstacle::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ObstacleMesh->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OnHit);
+	CapsuleCollider->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OnHit);
 	
 }
 
