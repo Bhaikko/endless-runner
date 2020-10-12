@@ -16,7 +16,7 @@ protected:
 	class USceneComponent* Root;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
-	class UStaticMeshComponent* ObstacleMesh;
+	class USkeletalMeshComponent* ObstacleMesh;
 	
 public:	
 	// Sets default values for this actor's properties
