@@ -6,8 +6,11 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/SceneComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/Pawn.h"
 
 #include "EndlessRunner/EndlessRunnerCharacter.h"
+
 
 // Sets default values
 AObstacle::AObstacle()
@@ -34,6 +37,8 @@ void AObstacle::BeginPlay()
 	Super::BeginPlay();
 
 	CapsuleCollider->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OnHit);
+
+	PlayerReference = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	
 }
 
@@ -41,6 +46,13 @@ void AObstacle::BeginPlay()
 void AObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (PlayerReference) {
+		float DistanceBetween = PlayerReference->GetActorLocation().X - GetActorLocation().X;
+		if (DistanceBetween >= 500.0f) {
+			Destroy();
+		}
+	}
 
 }
 
@@ -51,8 +63,6 @@ void AObstacle::OnHit(UPrimitiveComponent* OverlappedComponent, class AActor* Ot
 		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Inside"));
-
-	CollidedActor->HandleDeath();
+	// CollidedActor->HandleDeath();
 }
 

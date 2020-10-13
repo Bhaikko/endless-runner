@@ -48,4 +48,11 @@ protected:
 
 	UFUNCTION()
 	virtual void OnDisableAbility();
+
+protected:
+	class APawn* PlayerReference;
+
+	bool bPicked;
+
+
 };

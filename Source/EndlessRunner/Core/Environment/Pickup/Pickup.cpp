@@ -24,6 +24,8 @@ APickup::APickup()
 
 	PickupDuration = 0.0f;
 
+	bPicked = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +33,7 @@ void APickup::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	PlayerReference = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 }
 
 // Called every frame
@@ -38,12 +41,23 @@ void APickup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (!bPicked) {
+		if (PlayerReference) {
+			float DistanceBetween = PlayerReference->GetActorLocation().X - GetActorLocation().X;
+			if (DistanceBetween >= 500.0f) {
+				Destroy();
+			}
+		}
+	}
+
 }
 
 void APickup::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
 {
 	PickupMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	PickupMesh->SetVisibility(false);
+
+	bPicked = true;
 
 	if (!PickupSound) {
 		UE_LOG(LogTemp, Warning, TEXT("No Pickup sound assigned"));
@@ -60,9 +74,6 @@ void APickup::OnPickup(UPrimitiveComponent* OverlappedComponent, class AActor* O
 
 void APickup::OnDisableAbility() 
 {
-	if (!IsPendingKill()) {
-		UE_LOG(LogTemp, Warning, TEXT("Destroying"));
-		Destroy();
-	}
+	Destroy();
 }
 
