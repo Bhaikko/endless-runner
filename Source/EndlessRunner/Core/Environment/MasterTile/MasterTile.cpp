@@ -144,19 +144,19 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 	float ChanceOfSpawning = FMath::RandRange(0.0f, 1.0f);
 
 
-	if (ChanceOfSpawning >= 0.0f && ChanceOfSpawning <= 0.2f) {
+	if (ChanceOfSpawning >= 0.0f && ChanceOfSpawning <= 0.1f) {
 		AObstacle* SpawnedPipe = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::RUNNER],
 			Lane->GetComponentLocation(),
 			Lane->GetComponentRotation()
 		);
-	} else if (ChanceOfSpawning > 0.2f && ChanceOfSpawning <= 0.4f) {
+	} else if (ChanceOfSpawning > 0.1f && ChanceOfSpawning <= 0.2f) {
 		AObstacle* SpawnedBox = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::STONEGUY],
 			Lane->GetComponentLocation(),
 			Lane->GetComponentRotation()
 		);
-	} else if (ChanceOfSpawning > 0.4f && ChanceOfSpawning <= 0.6f) {
+	} else if (ChanceOfSpawning > 0.2f && ChanceOfSpawning <= 0.3f) {
 		AObstacle* SpawnedBox = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::HANDS],
 			Lane->GetComponentLocation(),

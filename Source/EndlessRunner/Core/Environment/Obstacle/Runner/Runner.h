@@ -20,11 +20,14 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Animation")
-	class TSubclassOf<UAnimInstance> JumpingAnimation;
+private:
+	bool bJumping;
 
 private:
 	FVector JumpPos;
+
+public:
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsJumping() const { return bJumping; }
 	
 };

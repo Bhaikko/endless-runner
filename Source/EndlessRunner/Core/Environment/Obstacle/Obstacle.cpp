@@ -28,6 +28,9 @@ AObstacle::AObstacle()
 	ObstacleMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Obstacle Mesh"));
 	ObstacleMesh->SetupAttachment(Root);
 
+	bMoveTowardsPlayer = false;
+	MoveSpeed = 2.0f;
+
 
 }
 
@@ -52,6 +55,12 @@ void AObstacle::Tick(float DeltaTime)
 		if (DistanceBetween >= 500.0f) {
 			Destroy();
 		}
+
+		SetActorLocation(FVector(
+			GetActorLocation().X - MoveSpeed * DeltaTime,
+			GetActorLocation().Y,
+			GetActorLocation().Z
+		));
 	}
 
 }
@@ -63,6 +72,6 @@ void AObstacle::OnHit(UPrimitiveComponent* OverlappedComponent, class AActor* Ot
 		return;
 	}
 
-	// CollidedActor->HandleDeath();
+	CollidedActor->HandleDeath();
 }
 

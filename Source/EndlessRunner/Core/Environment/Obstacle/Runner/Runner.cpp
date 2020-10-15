@@ -6,16 +6,13 @@
 
 ARunner::ARunner() 
 {
-    
+    bJumping = false;
 }
 
 void ARunner::BeginPlay() 
 {
     Super::BeginPlay();
 
-    if (!JumpingAnimation) {
-        UE_LOG(LogTemp, Warning, TEXT("No Jumping Animation Assigned"));
-    }
 
     JumpPos = ObstacleMesh->GetComponentLocation();
     JumpPos.Z += 100.0f;
@@ -32,7 +29,7 @@ void ARunner::Tick(float DeltaTime)
 
     float Distance = GetActorLocation().X - PlayerReference->GetActorLocation().X;
     if (Distance <= 500.0f) {
-        // ObstacleMesh->SetAnimInstanceClass(JumpingAnimation);
+        bJumping = true;
 
         SetActorLocation(FVector(
             ObstacleMesh->GetComponentLocation().X,

@@ -41,4 +41,11 @@ protected:
 protected:
 	class APawn* PlayerReference;
 
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+	bool bMoveTowardsPlayer;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+	float MoveSpeed;
+
 };
