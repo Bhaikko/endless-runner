@@ -146,6 +146,17 @@ void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime)
 void AEndlessRunnerCharacter::CancelSlide() 
 {
 	bSlide = false;
+	GetCapsuleComponent()->SetRelativeScale3D(FVector(
+		1.0f,
+		1.0f,
+		1.0f 
+	));
+
+	GetMesh()->SetRelativeScale3D(FVector(
+		1.0f,
+		1.0f,
+		1.0f 
+	));
 }
 
 void AEndlessRunnerCharacter::HandleDeath() 
@@ -221,7 +232,24 @@ void AEndlessRunnerCharacter::MoveDown()
 	if (CharacterMovementComponent->IsFalling()) {
 		CharacterMovementComponent->AddImpulse(FVector(0.0f, 0.0f, -3000.0f), true);
 	} else {
+		if (bSlide) {
+			return;
+		}
+		
 		bSlide = true;
+
+		GetCapsuleComponent()->SetRelativeScale3D(FVector(
+			1.0f,
+			1.0f,
+			0.25f 
+		));
+
+		GetMesh()->SetRelativeScale3D(FVector(
+			1.0f,
+			1.0f,
+			3.0f 
+		));
+
 		FTimerHandle SlideCancelHandler;
 
 		GetWorld()->GetTimerManager().SetTimer(SlideCancelHandler, this, &AEndlessRunnerCharacter::CancelSlide, SlideDuration);

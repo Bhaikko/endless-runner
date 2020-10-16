@@ -15,7 +15,7 @@ void ARunner::BeginPlay()
 
 
     JumpPos = ObstacleMesh->GetComponentLocation();
-    JumpPos.Z += 100.0f;
+    JumpPos.Z += 70.0f;
 
 }
 
