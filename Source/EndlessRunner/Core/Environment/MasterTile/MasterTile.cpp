@@ -144,24 +144,27 @@ void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane)
 	float ChanceOfSpawning = FMath::RandRange(0.0f, 1.0f);
 
 
-	if (ChanceOfSpawning >= 0.0f && ChanceOfSpawning <= 0.1f) {
+	if (ChanceOfSpawning >= 0.1f && ChanceOfSpawning <= 0.2f) {
 		AObstacle* SpawnedPipe = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::RUNNER],
 			Lane->GetComponentLocation(),
 			Lane->GetComponentRotation()
 		);
-	} else if (ChanceOfSpawning > 0.1f && ChanceOfSpawning <= 0.2f) {
+	} else if (ChanceOfSpawning > 0.2f && ChanceOfSpawning <= 0.3f) {
 		AObstacle* SpawnedBox = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::STONEGUY],
 			Lane->GetComponentLocation(),
 			Lane->GetComponentRotation()
 		);
-	} else if (ChanceOfSpawning > 0.2f && ChanceOfSpawning <= 0.3f) {
+	} else if (ChanceOfSpawning > 0.3f && ChanceOfSpawning <= 0.4f) {
 		AObstacle* SpawnedBox = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::HANDS],
 			Lane->GetComponentLocation(),
 			Lane->GetComponentRotation()
 		);
+	} else if (ChanceOfSpawning > 0.4f && ChanceOfSpawning <= 0.5f) {
+		CubeMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CubeMesh->SetVisibility(false);	
 	} else if (ChanceOfSpawning > 0.6f && ChanceOfSpawning <= 0.9f) {
 		APickup* SpawnedCoin = GetWorld()->SpawnActor<APickup>(
 			PickupClasses[EPickup::COIN],

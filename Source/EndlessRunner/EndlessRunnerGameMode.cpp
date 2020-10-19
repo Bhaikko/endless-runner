@@ -63,6 +63,7 @@ void AEndlessRunnerGameMode::SpawnTile()
 		return;
 	}
 
+
 	AMasterTile* SpawnedTile = GetWorld()->SpawnActor<AMasterTile>(
 		TileClass,
 		NextSpawnPointLocation,
@@ -70,4 +71,5 @@ void AEndlessRunnerGameMode::SpawnTile()
 	);
 
 	NextSpawnPointLocation = SpawnedTile->GetSpawnPoint()->GetComponentLocation();
+	NextSpawnPointLocation.X += 300.0f;
 }
