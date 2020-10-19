@@ -32,6 +32,9 @@ AMasterTile::AMasterTile()
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	BoxCollider->SetupAttachment(CubeMesh);
 	// BoxCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
+	DeathCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Death Collider"));
+	DeathCollider->SetupAttachment(CubeMesh);
 	
 	SpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("SpawnPoint"));
 	SpawnPoint->SetupAttachment(CubeMesh);
@@ -59,6 +62,7 @@ void AMasterTile::BeginPlay()
 	
 	// Binding Overlap Delegate for spawning new tiles
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AMasterTile::TileSpawnHandler);
+	DeathCollider->OnComponentBeginOverlap.AddDynamic(this, &AMasterTile::FallHandler);
 
 	// Spawning Obstacle 
 	AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -110,6 +114,16 @@ void AMasterTile::TileSpawnHandler(
 
 }
 
+void AMasterTile::FallHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
+{
+	AEndlessRunnerCharacter* CollidedActor = Cast<AEndlessRunnerCharacter>(OtherActor);
+	if (!CollidedActor) {
+		return;
+	}
+
+	CollidedActor->HandleDeath();
+}
+
 void AMasterTile::HandleDestruction() 
 {
 	Destroy();
@@ -121,6 +135,8 @@ void AMasterTile::SpawnObstacles()
 	SpawnObstacleInLane(Lane1);
 	SpawnObstacleInLane(Lane2);
 }
+
+
 
 void AMasterTile::SpawnObstacleInLane(UArrowComponent* Lane) 
 {

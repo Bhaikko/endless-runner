@@ -33,6 +33,13 @@ private:
 	// Responsible for Spawning Successive tile once player Overlaps this component
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* BoxCollider;
+
+	
+	// Responsible for Falling Death
+	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* DeathCollider;
+
+
 	
 private:
 	FTimerHandle DestroyTileHandle;
@@ -54,6 +61,9 @@ private:
 	UFUNCTION()
 	void TileSpawnHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void FallHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 // Getters
 public:
 	UArrowComponent* GetSpawnPoint() const;
@@ -64,6 +74,8 @@ private:
 
 	UFUNCTION()
 	void SpawnObstacles();
+
+	
 
 	UFUNCTION()
 	void SpawnObstacleInLane(UArrowComponent* Lane);
