@@ -58,14 +58,14 @@ void AEndlessRunnerGameMode::FindReferenceOfSaveGameHandler()
 
 void AEndlessRunnerGameMode::SpawnTile() 
 {
-	if (!TileClass) {
+	if (!TileClasses[0]) {
 		UE_LOG(LogTemp, Warning, TEXT("No Tile class Specified!!"));
 		return;
 	}
 
 
 	AMasterTile* SpawnedTile = GetWorld()->SpawnActor<AMasterTile>(
-		TileClass,
+		TileClasses[0],
 		NextSpawnPointLocation,
 		FRotator(0.0f, 0.0f, 0.0f)
 	);

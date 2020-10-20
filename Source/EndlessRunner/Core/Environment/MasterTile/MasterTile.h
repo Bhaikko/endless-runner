@@ -11,22 +11,10 @@ class ENDLESSRUNNER_API AMasterTile : public AActor
 {
 	GENERATED_BODY()
 
-private:
+protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class USceneComponent* Root;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
-	class UStaticMeshComponent* CubeMesh;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
-	class UArrowComponent* Lane0;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
-	class UArrowComponent* Lane1;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
-	class UArrowComponent* Lane2;
-
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UArrowComponent* SpawnPoint;
 
@@ -34,12 +22,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* BoxCollider;
 
-	
 	// Responsible for Falling Death
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* DeathCollider;
-
-
 	
 private:
 	FTimerHandle DestroyTileHandle;
@@ -59,7 +44,7 @@ public:
 // Delegates
 private:
 	UFUNCTION()
-	void TileSpawnHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void TileSpawnHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
 	void FallHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -68,17 +53,13 @@ private:
 public:
 	UArrowComponent* GetSpawnPoint() const;
 
-private:
+protected:
 	UFUNCTION()
 	void HandleDestruction();
 
 	UFUNCTION()
-	void SpawnObstacles();
+	virtual void SpawnObstacles();
 
-	
-
-	UFUNCTION()
-	void SpawnObstacleInLane(UArrowComponent* Lane);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Obstacles")
@@ -87,7 +68,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Pickups")
 	TArray<TSubclassOf<class APickup>> PickupClasses;
 
-private:
+protected:
 	enum EObstacle 
 	{
 		RUNNER = 0,

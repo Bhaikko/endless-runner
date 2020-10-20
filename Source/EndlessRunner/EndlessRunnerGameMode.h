@@ -21,10 +21,15 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
+protected:
 
-	UPROPERTY(EditDefaultsOnly, Category = "Tiles Configuration", meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class AMasterTile> TileClass;
+	/*
+		0 -> Running
+		1 -> Wall Running
+		2 -> Gliding
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Tiles Configuration")
+	TArray<TSubclassOf<class AMasterTile>> TileClasses;	
 
 private:
 	FVector NextSpawnPointLocation;
