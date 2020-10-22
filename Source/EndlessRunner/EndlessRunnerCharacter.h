@@ -6,6 +6,16 @@
 #include "GameFramework/Character.h"
 #include "EndlessRunnerCharacter.generated.h"
 
+ UENUM()
+ enum EMovementDirection
+ {
+    UP,
+	DOWN,
+	LEFt,
+	RIGHT
+ };
+
+
 UCLASS(config=Game)
 class AEndlessRunnerCharacter : public ACharacter
 {
@@ -17,6 +27,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Handlers", meta = (AllowPrivateAccess = "true"))
+	class ULaneHandler* LaneHandler;
 
 	
 public:

@@ -15,6 +15,8 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 	Points = 0;
 	PointsMultiplier = 1;
 	Coins = 0;
+
+	CurrentTiles = ETilesType::RUNNING;
 }
 
 void AEndlessRunnerGameMode::BeginPlay() 

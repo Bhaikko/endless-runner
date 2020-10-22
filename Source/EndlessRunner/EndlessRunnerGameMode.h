@@ -7,6 +7,14 @@
 #include "EndlessRunner/Core/Resources/SaveGameHandler/SaveGameHandler.h"
 #include "EndlessRunnerGameMode.generated.h"
 
+ UENUM()
+ enum ETilesType
+ {
+    RUNNING,
+	WALLRUNNING,
+	GLIDING
+ };
+
 UCLASS(minimalapi)
 class AEndlessRunnerGameMode : public AGameModeBase
 {
@@ -54,8 +62,13 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE int32 GetHighScore() const { return SaveGameHandler->GetHighScore(); }
 
+	UFUNCTION()
+	FORCEINLINE ETilesType GetCurrentTileType() const { return CurrentTiles; }
+
 private:
 	ASaveGameHandler* SaveGameHandler;
+
+	ETilesType CurrentTiles;
 
 private:
 	UFUNCTION()

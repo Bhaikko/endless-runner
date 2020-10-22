@@ -13,6 +13,7 @@
 
 #include "EndlessRunner/Core/Controllers/RunnerPlayerController.h"
 #include "EndlessRunner/EndlessRunnerGameMode.h"
+#include "EndlessRunner/Core/Components/LaneHandler/LaneHandler.h"
 
 
 AEndlessRunnerCharacter::AEndlessRunnerCharacter()
@@ -37,6 +38,9 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); 
 	FollowCamera->bUsePawnControlRotation = false; 
+
+	LaneHandler = CreateDefaultSubobject<ULaneHandler>(TEXT("Lane Handler"));
+
 
 	
 	Lane = 1;
@@ -88,6 +92,7 @@ void AEndlessRunnerCharacter::SetupPlayerInputComponent(class UInputComponent* P
 
 void AEndlessRunnerCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
+	
 	Jump();
 }
 
@@ -98,26 +103,30 @@ void AEndlessRunnerCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVecto
 
 void AEndlessRunnerCharacter::MoveLeft() 
 {
-	NewLane = FMath::Clamp<float>(
-		Lane - 1,
-		0,
-		2
-	);
+	// NewLane = FMath::Clamp<float>(
+	// 	Lane - 1,
+	// 	0,
+	// 	2
+	// );
 	
-	bShouldSwitch = true;
-	Lane = NewLane;
+	// bShouldSwitch = true;
+	// Lane = NewLane;
+
+	LaneHandler->ChangeLane(EMovementDirection::LEFT);
+
 }
 
 void AEndlessRunnerCharacter::MoveRight() 
 {
-	NewLane = FMath::Clamp<float>(
-		Lane + 1,
-		0,
-		2
-	);
+	// NewLane = FMath::Clamp<float>(
+	// 	Lane + 1,
+	// 	0,
+	// 	2
+	// );
 
-	bShouldSwitch = true;
-	Lane = NewLane;
+	// bShouldSwitch = true;
+	// Lane = NewLane;
+	LaneHandler->ChangeLane(EMovementDirection::RIGHT);
 }
 
 void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime) 

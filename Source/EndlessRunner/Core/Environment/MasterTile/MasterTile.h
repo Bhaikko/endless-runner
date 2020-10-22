@@ -53,6 +53,8 @@ private:
 public:
 	UArrowComponent* GetSpawnPoint() const;
 
+	virtual FVector* GetLanes();
+
 protected:
 	UFUNCTION()
 	void HandleDestruction();

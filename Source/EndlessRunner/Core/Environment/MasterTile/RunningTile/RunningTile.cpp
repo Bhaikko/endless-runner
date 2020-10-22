@@ -119,3 +119,11 @@ void ARunningTile::SpawnObstacles()
     SpawnObstacleInLane(Lane1);
     SpawnObstacleInLane(Lane2);
 }
+
+FVector* ARunningTile::GetLanes() 
+{
+	FVector* LanesVector = new FVector[1][3];
+	LanesVector[0][0] = Lane0->GetComponentLocation();
+	LanesVector[0][1] = Lane1->GetComponentLocation();
+	LanesVector[0][2] = Lane2->GetComponentLocation();
+}

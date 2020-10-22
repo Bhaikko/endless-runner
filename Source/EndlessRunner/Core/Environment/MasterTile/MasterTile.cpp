@@ -118,3 +118,8 @@ UArrowComponent* AMasterTile::GetSpawnPoint() const
 	return this->SpawnPoint;
 }
 
+FVector* AMasterTile::GetLanes() 
+{
+	
+}
+
