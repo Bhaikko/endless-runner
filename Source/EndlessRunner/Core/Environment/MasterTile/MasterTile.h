@@ -53,7 +53,7 @@ private:
 public:
 	UArrowComponent* GetSpawnPoint() const;
 
-	virtual FVector* GetLanes();
+	virtual void GetLanes(TArray<FVector>& Locations);
 
 protected:
 	UFUNCTION()

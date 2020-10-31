@@ -25,9 +25,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	FVector* Lanes;
-	FVector CurrentLane;
-	FVector NewLane;
+	TArray<FVector> Lanes;
+	int32 CurrentLaneY, CurrentLaneZ;
+	int32 NewLaneY, NewLaneZ;
 	bool bShouldSwitch;
 
 	class AEndlessRunnerGameMode* GameModeReference;
@@ -36,9 +36,19 @@ private:
 private:
 	void LerpBetweenLanes(float DeltaTime);
 
-	void ChangeTiles(enum ETilesType TilesType);
+	void ChangeTiles(enum class ETilesType : uint8 TilesType);
 public:
 
-	void ChangeLane(EMovementDirection Direction);
+	void ChangeLane(enum class EMovementDirection : uint8 Direction);
+
+private:
+	void MoveLeft();
+	void MoveRight();
+	void MoveUp();
+	void MoveDown();
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
+	float ChangeLaneSpeed;
 		
 };

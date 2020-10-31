@@ -7,8 +7,8 @@
 #include "EndlessRunner/Core/Resources/SaveGameHandler/SaveGameHandler.h"
 #include "EndlessRunnerGameMode.generated.h"
 
- UENUM()
- enum ETilesType
+ UENUM(BlueprintType)
+ enum class ETilesType : uint8 
  {
     RUNNING,
 	WALLRUNNING,
@@ -64,6 +64,9 @@ public:
 
 	UFUNCTION()
 	FORCEINLINE ETilesType GetCurrentTileType() const { return CurrentTiles; }
+
+	UFUNCTION()
+	void GetLaneVectors(FVector& Locations, ETilesType TilesType);
 
 private:
 	ASaveGameHandler* SaveGameHandler;

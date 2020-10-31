@@ -44,5 +44,5 @@ protected:
 	virtual void SpawnObstacles() override;
 
 public:
-	virtual FVector* GetLanes() override;
+	virtual void GetLanes(TArray<FVector>& Locations) override;
 };

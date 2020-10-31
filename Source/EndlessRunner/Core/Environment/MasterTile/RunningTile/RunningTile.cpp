@@ -120,10 +120,13 @@ void ARunningTile::SpawnObstacles()
     SpawnObstacleInLane(Lane2);
 }
 
-FVector* ARunningTile::GetLanes() 
+void ARunningTile::GetLanes(TArray<FVector>& Locations) 
 {
-	FVector* LanesVector = new FVector[1][3];
-	LanesVector[0][0] = Lane0->GetComponentLocation();
-	LanesVector[0][1] = Lane1->GetComponentLocation();
-	LanesVector[0][2] = Lane2->GetComponentLocation();
+	for (int i = 0; i < 9; i++) {
+		Locations[i] = FVector();
+	}
+
+	Locations[3] = Lane0->GetComponentLocation();
+	Locations[4] = Lane1->GetComponentLocation();
+	Locations[5] = Lane2->GetComponentLocation();
 }

@@ -41,20 +41,7 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 
 	LaneHandler = CreateDefaultSubobject<ULaneHandler>(TEXT("Lane Handler"));
 
-
-	
-	Lane = 1;
-	NewLane = 0;
-
-	// These are hard coded, later will be fixed using References from current tile
-	LaneY[0] = -330.0f;
-	LaneY[1] =   20.0f;
-	LaneY[2] =  370.0f;
-
-	ChangeLaneSpeed = 100.0f;
 	SlideDuration = 1.0f;
-
-	bShouldSwitch = false;
 
 	bSlide = false;
 
@@ -103,47 +90,29 @@ void AEndlessRunnerCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVecto
 
 void AEndlessRunnerCharacter::MoveLeft() 
 {
-	// NewLane = FMath::Clamp<float>(
-	// 	Lane - 1,
-	// 	0,
-	// 	2
-	// );
-	
-	// bShouldSwitch = true;
-	// Lane = NewLane;
-
 	LaneHandler->ChangeLane(EMovementDirection::LEFT);
-
 }
 
 void AEndlessRunnerCharacter::MoveRight() 
 {
-	// NewLane = FMath::Clamp<float>(
-	// 	Lane + 1,
-	// 	0,
-	// 	2
-	// );
-
-	// bShouldSwitch = true;
-	// Lane = NewLane;
 	LaneHandler->ChangeLane(EMovementDirection::RIGHT);
 }
 
 void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime) 
 {
-	FVector CurrentLocation = GetActorLocation();
-	float NewLocationY = LaneY[NewLane];
+	// FVector CurrentLocation = GetActorLocation();
+	// float NewLocationY = LaneY[NewLane];
 	
-	SetActorLocation(FVector(
-		CurrentLocation.X,
-		FMath::FInterpConstantTo(CurrentLocation.Y, NewLocationY, DeltaTime, ChangeLaneSpeed),
-		CurrentLocation.Z
-	));
+	// SetActorLocation(FVector(
+	// 	CurrentLocation.X,
+	// 	FMath::FInterpConstantTo(CurrentLocation.Y, NewLocationY, DeltaTime, ChangeLaneSpeed),
+	// 	CurrentLocation.Z
+	// ));
 
 
-	if (FMath::Abs((NewLocationY - CurrentLocation.Y)) <= 0.01f) {
-		bShouldSwitch = false;
-	} 
+	// if (FMath::Abs((NewLocationY - CurrentLocation.Y)) <= 0.01f) {
+	// 	bShouldSwitch = false;
+	// } 
 }
 
 void AEndlessRunnerCharacter::CancelSlide() 

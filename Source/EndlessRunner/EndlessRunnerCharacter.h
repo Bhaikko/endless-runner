@@ -6,14 +6,14 @@
 #include "GameFramework/Character.h"
 #include "EndlessRunnerCharacter.generated.h"
 
- UENUM()
- enum EMovementDirection
- {
-    UP,
-	DOWN,
-	LEFt,
+UENUM(BlueprintType)
+enum class EMovementDirection : uint8 
+{
+	DOWN = 0,
+	LEFT,
+	UP,
 	RIGHT
- };
+};
 
 
 UCLASS(config=Game)
@@ -66,9 +66,6 @@ protected:
 	// End of APawn interface
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
-	float ChangeLaneSpeed;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
 	float SlideDuration;
 

@@ -15,8 +15,6 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 	Points = 0;
 	PointsMultiplier = 1;
 	Coins = 0;
-
-	CurrentTiles = ETilesType::RUNNING;
 }
 
 void AEndlessRunnerGameMode::BeginPlay() 
@@ -43,6 +41,15 @@ void AEndlessRunnerGameMode::TrySetNewHighScore()
 	// SaveGameHandler->TrySetNewHighScore(Points);
 
 	UE_LOG(LogTemp, Warning, TEXT("HighScore: %d"), SaveGameHandler->GetHighScore());
+}
+
+void AEndlessRunnerGameMode::GetLaneVectors(FVector& Locations[][3], ETilesType TilesType) 
+{
+	if (TilesType == ETilesType::RUNNING) {
+		TileClasses[0]->GetLanes(Locations);
+	} else if (TilesType == ETilesTypes::WALLRUNNING) {
+		TileClasses[1]->GetLanes(Locations);
+	}
 }
 
 void AEndlessRunnerGameMode::FindReferenceOfSaveGameHandler() 

@@ -11,8 +11,14 @@
 ULaneHandler::ULaneHandler()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+	CurrentLaneY = 1;
+	CurrentLaneZ = 1;
 
-	Lanes = nullptr;
+	for (int i = 0; i < 9; i++) {
+		Lanes.Push(FVector());
+	}
+
+	ChangeLaneSpeed = 100.0f;
 }
 
 
@@ -24,7 +30,7 @@ void ULaneHandler::BeginPlay()
 	GameModeReference = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	RunnerCharacterReference = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	
-	
+	ChangeTiles(ETilesType::RUNNING);	
 }
 
 
@@ -33,16 +39,76 @@ void ULaneHandler::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	if (bShouldSwitch) {
+		LerpBetweenLanes(DeltaTime);
+	}
 }
 
-void ULaneHandler::ChangeTiles(enum ETilesType TilesType) 
+void ULaneHandler::LerpBetweenLanes(float DeltaTime) 
 {
-	// Lanes = 
+	FVector CurrentLocation = GetOwner()->GetActorLocation();
+	FVector NewLocation = Lanes[NewLaneZ * 3 + NewLaneY];
+	
+	GetOwner()->SetActorLocation(FVector(
+		CurrentLocation.X,
+		FMath::FInterpConstantTo(CurrentLocation.Y, NewLocation.Y, DeltaTime, ChangeLaneSpeed),
+		FMath::FInterpConstantTo(CurrentLocation.Z, NewLocation.Z, DeltaTime, ChangeLaneSpeed)
+	));
+
+
+	if (FVector::Distance(NewLocation - CurrentLocation) <= 0.01f) {
+		bShouldSwitch = false;
+	} 
+}
+
+void ULaneHandler::ChangeTiles(ETilesType TilesType) 
+{
+	GameModeReference->GetLaneVectors(Lanes, TilesType);
+
 }
 
 void ULaneHandler::ChangeLane(EMovementDirection Direction) 
 {
+	if (Direction == EMovementDirection::LEFT) {
+		MoveLeft();
+	} else if (Direction == EMovementDirection::RIGHT) {
+		MoveRight();
+	} 
 	
+	if (Direction == EMovementDirection::UP) {
+		MoveUp();
+	} else if (Direction == EMovementDirection::DOWN) {
+		MoveDown();
+	}
+
+	bShouldSwitch = true;
+
+}
+
+void ULaneHandler::MoveLeft() 
+{
+	if (GameModeReference->GetCurrentTileType() == ETilesType::RUNNING) {
+		NewLaneY = FMath::Clamp<float>(
+			CurrentLaneY - 1,
+			0,
+			1
+		);
+
+		NewLaneZ = CurrentLaneZ;
+	}
+
+}
+
+void ULaneHandler::MoveRight() 
+{
+	if (GameModeReference->GetCurrentTileType() == ETilesType::RUNNING) {
+		NewLaneY = FMath::Clamp<float>(
+			CurrentLaneY + 1,
+			0,
+			2
+		);
+
+		NewLaneZ = CurrentLaneZ;
+	}
 }
 
