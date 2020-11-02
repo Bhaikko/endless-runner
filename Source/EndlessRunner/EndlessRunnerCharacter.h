@@ -4,16 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "EndlessRunner/Core/Resources/Enums.h"
 #include "EndlessRunnerCharacter.generated.h"
-
-UENUM(BlueprintType)
-enum class EMovementDirection : uint8 
-{
-	DOWN = 0,
-	LEFT,
-	UP,
-	RIGHT
-};
 
 
 UCLASS(config=Game)
@@ -79,6 +71,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool IsSliding() const { return bSlide; }
+
+	void UpdateTiles();
 
 private:
 	int32 Lane;	// Index for current lane, the character is, 0 -> Left, 1 -> Middle, 2 -> Right

@@ -46,3 +46,17 @@ void AWallRunning::SpawnObstacles()
 {
     
 }
+
+TArray<FVector> AWallRunning::GetLanes() 
+{
+    TArray<FVector> Locations;
+	for (int i = 0; i < 9; i++) {
+		Locations.Push(FVector());
+	}
+
+	Locations[3] = LeftWall->GetComponentLocation();
+	Locations[4] = MiddleWall->GetComponentLocation();
+	Locations[5] = RightWall->GetComponentLocation();
+
+	return Locations;
+}

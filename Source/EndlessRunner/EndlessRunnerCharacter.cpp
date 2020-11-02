@@ -77,6 +77,11 @@ void AEndlessRunnerCharacter::SetupPlayerInputComponent(class UInputComponent* P
 
 }
 
+void AEndlessRunnerCharacter::UpdateTiles() 
+{
+	LaneHandler->UpdateLanes();
+}
+
 void AEndlessRunnerCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
 	
@@ -90,12 +95,12 @@ void AEndlessRunnerCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVecto
 
 void AEndlessRunnerCharacter::MoveLeft() 
 {
-	LaneHandler->ChangeLane(EMovementDirection::LEFT);
+	LaneHandler->ChangeLane(EndlessRunnerEnums::EMovementDirection::LEFT);
 }
 
 void AEndlessRunnerCharacter::MoveRight() 
 {
-	LaneHandler->ChangeLane(EMovementDirection::RIGHT);
+	LaneHandler->ChangeLane(EndlessRunnerEnums::EMovementDirection::RIGHT);
 }
 
 void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime) 

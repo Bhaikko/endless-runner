@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "EndlessRunner/Core/Resources/Enums.h"
 #include "LaneHandler.generated.h"
 
 
@@ -36,10 +37,10 @@ private:
 private:
 	void LerpBetweenLanes(float DeltaTime);
 
-	void ChangeTiles(enum class ETilesType : uint8 TilesType);
 public:
+	void UpdateLanes();
 
-	void ChangeLane(enum class EMovementDirection : uint8 Direction);
+	void ChangeLane(EndlessRunnerEnums::EMovementDirection Direction);
 
 private:
 	void MoveLeft();

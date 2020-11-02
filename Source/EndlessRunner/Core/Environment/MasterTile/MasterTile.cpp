@@ -69,6 +69,7 @@ void AMasterTile::TileSpawnHandler(
 	if (!CollidedActor) {
 		return;
 	}
+	CollidedActor->UpdateTiles();
 
 	AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	GameMode->SpawnTile();
@@ -118,8 +119,10 @@ UArrowComponent* AMasterTile::GetSpawnPoint() const
 	return this->SpawnPoint;
 }
 
-void AMasterTile::GetLanes(TArray<FVector>& Locations) 
+TArray<FVector> AMasterTile::GetLanes() 
 {
-	
+	UE_LOG(LogTemp, Warning, TEXT("Inside"));
+	TArray<FVector> Locations;
+	return Locations;	
 }
 

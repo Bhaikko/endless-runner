@@ -42,5 +42,8 @@ private:
 
 protected:
 	virtual void SpawnObstacles() override;
+
+public:
+	virtual TArray<FVector> GetLanes() override;
 	
 };

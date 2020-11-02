@@ -14,10 +14,6 @@ ULaneHandler::ULaneHandler()
 	CurrentLaneY = 1;
 	CurrentLaneZ = 1;
 
-	for (int i = 0; i < 9; i++) {
-		Lanes.Push(FVector());
-	}
-
 	ChangeLaneSpeed = 100.0f;
 }
 
@@ -30,7 +26,6 @@ void ULaneHandler::BeginPlay()
 	GameModeReference = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	RunnerCharacterReference = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	
-	ChangeTiles(ETilesType::RUNNING);	
 }
 
 
@@ -56,28 +51,27 @@ void ULaneHandler::LerpBetweenLanes(float DeltaTime)
 	));
 
 
-	if (FVector::Distance(NewLocation - CurrentLocation) <= 0.01f) {
+	if (FVector::Distance(NewLocation, CurrentLocation) <= 0.01f) {
 		bShouldSwitch = false;
 	} 
 }
 
-void ULaneHandler::ChangeTiles(ETilesType TilesType) 
+void ULaneHandler::UpdateLanes() 
 {
-	GameModeReference->GetLaneVectors(Lanes, TilesType);
-
+	Lanes = GameModeReference->GetLaneVectors();
 }
 
-void ULaneHandler::ChangeLane(EMovementDirection Direction) 
+void ULaneHandler::ChangeLane(EndlessRunnerEnums::EMovementDirection Direction) 
 {
-	if (Direction == EMovementDirection::LEFT) {
+	if (Direction == EndlessRunnerEnums::EMovementDirection::LEFT) {
 		MoveLeft();
-	} else if (Direction == EMovementDirection::RIGHT) {
+	} else if (Direction == EndlessRunnerEnums::EMovementDirection::RIGHT) {
 		MoveRight();
 	} 
 	
-	if (Direction == EMovementDirection::UP) {
+	if (Direction == EndlessRunnerEnums::EMovementDirection::UP) {
 		MoveUp();
-	} else if (Direction == EMovementDirection::DOWN) {
+	} else if (Direction == EndlessRunnerEnums::EMovementDirection::DOWN) {
 		MoveDown();
 	}
 
@@ -87,7 +81,7 @@ void ULaneHandler::ChangeLane(EMovementDirection Direction)
 
 void ULaneHandler::MoveLeft() 
 {
-	if (GameModeReference->GetCurrentTileType() == ETilesType::RUNNING) {
+	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::RUNNING) {
 		NewLaneY = FMath::Clamp<float>(
 			CurrentLaneY - 1,
 			0,
@@ -101,7 +95,7 @@ void ULaneHandler::MoveLeft()
 
 void ULaneHandler::MoveRight() 
 {
-	if (GameModeReference->GetCurrentTileType() == ETilesType::RUNNING) {
+	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::RUNNING) {
 		NewLaneY = FMath::Clamp<float>(
 			CurrentLaneY + 1,
 			0,
@@ -110,5 +104,15 @@ void ULaneHandler::MoveRight()
 
 		NewLaneZ = CurrentLaneZ;
 	}
+}
+
+void ULaneHandler::MoveUp() 
+{
+	
+}
+
+void ULaneHandler::MoveDown() 
+{
+	
 }
 

@@ -4,16 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "EndlessRunner/Core/Resources/Enums.h"
 #include "EndlessRunner/Core/Resources/SaveGameHandler/SaveGameHandler.h"
 #include "EndlessRunnerGameMode.generated.h"
-
- UENUM(BlueprintType)
- enum class ETilesType : uint8 
- {
-    RUNNING,
-	WALLRUNNING,
-	GLIDING
- };
 
 UCLASS(minimalapi)
 class AEndlessRunnerGameMode : public AGameModeBase
@@ -62,16 +55,17 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE int32 GetHighScore() const { return SaveGameHandler->GetHighScore(); }
 
-	UFUNCTION()
-	FORCEINLINE ETilesType GetCurrentTileType() const { return CurrentTiles; }
+	// UFUNCTION()
+	FORCEINLINE EndlessRunnerEnums::ETilesType GetCurrentTileType() const { return CurrentTiles; }
 
-	UFUNCTION()
-	void GetLaneVectors(FVector& Locations, ETilesType TilesType);
+	// UFUNCTION()
+	TArray<FVector> GetLaneVectors();
 
 private:
 	ASaveGameHandler* SaveGameHandler;
 
-	ETilesType CurrentTiles;
+	EndlessRunnerEnums::ETilesType CurrentTiles;
+	class AMasterTile* CurrentSpawnedTile;
 
 private:
 	UFUNCTION()
