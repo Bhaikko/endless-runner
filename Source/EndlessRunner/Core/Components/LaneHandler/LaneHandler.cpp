@@ -26,6 +26,7 @@ void ULaneHandler::BeginPlay()
 	GameModeReference = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	RunnerCharacterReference = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	
+	Lanes.Push(FVector());
 }
 
 
@@ -63,6 +64,7 @@ void ULaneHandler::UpdateLanes()
 
 void ULaneHandler::ChangeLane(EndlessRunnerEnums::EMovementDirection Direction) 
 {
+
 	if (Direction == EndlessRunnerEnums::EMovementDirection::LEFT) {
 		MoveLeft();
 	} else if (Direction == EndlessRunnerEnums::EMovementDirection::RIGHT) {
@@ -81,28 +83,68 @@ void ULaneHandler::ChangeLane(EndlessRunnerEnums::EMovementDirection Direction)
 
 void ULaneHandler::MoveLeft() 
 {
-	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::RUNNING) {
-		NewLaneY = FMath::Clamp<float>(
-			CurrentLaneY - 1,
-			0,
-			1
-		);
+	switch (GameModeReference->GetCurrentTileType()) {
+		case EndlessRunnerEnums::ETilesType::RUNNING:
+			NewLaneY = FMath::Clamp<float>(
+				CurrentLaneY - 1,
+				0,
+				2
+			);
 
-		NewLaneZ = CurrentLaneZ;
+			NewLaneZ = CurrentLaneZ;
+			break;
+
+		case EndlessRunnerEnums::ETilesType::WALLRUNNING:
+			NewLaneY = FMath::Clamp<float>(
+				CurrentLaneY - 1,
+				0, 
+				1
+			);
+
+			NewLaneZ = CurrentLaneZ;
+			
+			break;
+
+		case EndlessRunnerEnums::ETilesType::GLIDING:
+
+			break;
+
+		default:
+			break;
 	}
-
 }
 
 void ULaneHandler::MoveRight() 
 {
-	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::RUNNING) {
-		NewLaneY = FMath::Clamp<float>(
-			CurrentLaneY + 1,
-			0,
-			2
-		);
+		
+	switch (GameModeReference->GetCurrentTileType()) {
+		case EndlessRunnerEnums::ETilesType::RUNNING:
+			NewLaneY = FMath::Clamp<float>(
+				CurrentLaneY + 1,
+				0,
+				2
+			);
 
-		NewLaneZ = CurrentLaneZ;
+			NewLaneZ = CurrentLaneZ;
+			break;
+
+		case EndlessRunnerEnums::ETilesType::WALLRUNNING:
+			NewLaneY = FMath::Clamp<float>(
+				CurrentLaneY + 1,
+				0, 
+				1
+			);
+
+			NewLaneZ = CurrentLaneZ;
+			
+			break;
+
+		case EndlessRunnerEnums::ETilesType::GLIDING:
+
+			break;
+
+		default:
+			break;
 	}
 }
 

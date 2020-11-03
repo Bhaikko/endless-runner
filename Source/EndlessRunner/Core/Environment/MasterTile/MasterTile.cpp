@@ -113,7 +113,6 @@ void AMasterTile::SpawnObstacles()
 	
 }
 
-
 UArrowComponent* AMasterTile::GetSpawnPoint() const
 {
 	return this->SpawnPoint;
@@ -121,8 +120,8 @@ UArrowComponent* AMasterTile::GetSpawnPoint() const
 
 TArray<FVector> AMasterTile::GetLanes() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("Inside"));
 	TArray<FVector> Locations;
+	Locations.Push(FVector());
 	return Locations;	
 }
 

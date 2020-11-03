@@ -28,17 +28,20 @@ protected:
 	class UStaticMeshComponent* LeftWall;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
-	class UStaticMeshComponent* MiddleWall;
+	class UStaticMeshComponent* RightWall;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
-	class UStaticMeshComponent* RightWall;
+	class UArrowComponent* Lane0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
+	class UArrowComponent* Lane1;
 
 private:
 	UFUNCTION()
 	void SpawnObstacleInLane(class UArrowComponent* Lane);
 
 	UFUNCTION()
-	void SpawnMiddleWall();
+	void DespawnOneWall();
 
 protected:
 	virtual void SpawnObstacles() override;

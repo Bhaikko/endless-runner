@@ -2,24 +2,30 @@
 
 
 #include "WallRunning.h"
-
+#include "Components/ArrowComponent.h"
 
 AWallRunning::AWallRunning() 
 {
     LeftWall = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Left Wall"));
     LeftWall->SetupAttachment(Root);
 
-    MiddleWall = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Middle Wall"));
-    MiddleWall->SetupAttachment(Root);
-
     RightWall = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Right Wall"));
     RightWall->SetupAttachment(Root);
+
+	// Left Lane
+	Lane0 = CreateDefaultSubobject<UArrowComponent>(TEXT("Lane0"));
+	Lane0->SetupAttachment(Root);
+
+	// Right lane
+	Lane1 = CreateDefaultSubobject<UArrowComponent>(TEXT("Lane2"));
+	Lane1->SetupAttachment(Root);  
+
 }
 
 void AWallRunning::BeginPlay() 
 {
     Super::BeginPlay();
-    SpawnMiddleWall();
+    DespawnOneWall();
 }
 
 void AWallRunning::Tick(float DeltaTime) 
@@ -32,13 +38,20 @@ void AWallRunning::SpawnObstacleInLane(class UArrowComponent* Lane)
     
 }
 
-void AWallRunning::SpawnMiddleWall() 
+void AWallRunning::DespawnOneWall() 
 {
     float ChanceOfSpawning = FMath::RandRange(0.0f, 1.0f);
 
-    if (ChanceOfSpawning <= 0.25f) {
-        MiddleWall->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        MiddleWall->SetVisibility(false);
+    if (ChanceOfSpawning <= 0.40f) {
+        float WallProb = FMath::RandRange(0.0f, 1.0f);
+
+        if (WallProb >= 0.5f) {
+            LeftWall->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            LeftWall->SetVisibility(false);
+        } else {
+            RightWall->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+            RightWall->SetVisibility(false);
+        }
     }
 }
 
@@ -54,9 +67,8 @@ TArray<FVector> AWallRunning::GetLanes()
 		Locations.Push(FVector());
 	}
 
-	Locations[3] = LeftWall->GetComponentLocation();
-	Locations[4] = MiddleWall->GetComponentLocation();
-	Locations[5] = RightWall->GetComponentLocation();
+	Locations[3] = Lane0->GetComponentLocation();
+	Locations[4] = Lane1->GetComponentLocation();
 
 	return Locations;
 }
