@@ -19,6 +19,8 @@
 AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	GetCapsuleComponent()->SetVisibility(true);
+	GetCapsuleComponent()->SetHiddenInGame(false);
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -55,8 +57,6 @@ void AEndlessRunnerCharacter::BeginPlay()
 
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Input
 void AEndlessRunnerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// Set up gameplay key bindings
@@ -152,11 +152,9 @@ void AEndlessRunnerCharacter::MoveForward(float Value)
 {
 	if ((Controller != NULL) && (Value != 0.0f))
 	{
-		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
 	}

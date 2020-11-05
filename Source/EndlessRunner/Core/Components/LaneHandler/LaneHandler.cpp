@@ -42,17 +42,24 @@ void ULaneHandler::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void ULaneHandler::LerpBetweenLanes(float DeltaTime) 
 {
+	if (Lanes.Num() < 9) {
+		return;
+	}
+
 	FVector CurrentLocation = GetOwner()->GetActorLocation();
 	FVector NewLocation = Lanes[NewLaneZ * 3 + NewLaneY];
-	
+
 	GetOwner()->SetActorLocation(FVector(
 		CurrentLocation.X,
 		FMath::FInterpConstantTo(CurrentLocation.Y, NewLocation.Y, DeltaTime, ChangeLaneSpeed),
-		FMath::FInterpConstantTo(CurrentLocation.Z, NewLocation.Z, DeltaTime, ChangeLaneSpeed)
+		// FMath::FInterpConstantTo(CurrentLocation.Z, NewLocation.Z, DeltaTime, ChangeLaneSpeed)
+		CurrentLocation.Z
 	));
 
-
-	if (FVector::Distance(NewLocation, CurrentLocation) <= 0.01f) {
+	CurrentLocation.X = 0.0f;
+	NewLocation.X = 0.0f;
+	float Distance = FVector::Distance(NewLocation, CurrentLocation);
+	if (Distance <= 0.01f) {
 		bShouldSwitch = false;
 	} 
 }
@@ -90,7 +97,7 @@ void ULaneHandler::MoveLeft()
 				0,
 				2
 			);
-
+			CurrentLaneY = NewLaneY;
 			NewLaneZ = CurrentLaneZ;
 			break;
 
@@ -100,7 +107,7 @@ void ULaneHandler::MoveLeft()
 				0, 
 				1
 			);
-
+			CurrentLaneY = NewLaneY;
 			NewLaneZ = CurrentLaneZ;
 			
 			break;
@@ -124,7 +131,7 @@ void ULaneHandler::MoveRight()
 				0,
 				2
 			);
-
+			CurrentLaneY = NewLaneY;
 			NewLaneZ = CurrentLaneZ;
 			break;
 
@@ -134,7 +141,7 @@ void ULaneHandler::MoveRight()
 				0, 
 				1
 			);
-
+			CurrentLaneY = NewLaneY;
 			NewLaneZ = CurrentLaneZ;
 			
 			break;
