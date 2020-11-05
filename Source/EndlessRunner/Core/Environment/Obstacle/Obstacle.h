@@ -3,24 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "Obstacle.generated.h"
 
 UCLASS()
-class ENDLESSRUNNER_API AObstacle : public AActor
+class ENDLESSRUNNER_API AObstacle : public ACharacter
 {
 	GENERATED_BODY()
 
-protected:
-
-	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
-	class USceneComponent* Root;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Collision")
-	class UCapsuleComponent* CapsuleCollider;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
-	class USkeletalMeshComponent* ObstacleMesh;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -45,7 +35,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 	bool bMoveTowardsPlayer;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
-	float MoveSpeed;
+protected:
+	void MoveTowardsPlayer();
 
 };

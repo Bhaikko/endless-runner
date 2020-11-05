@@ -64,9 +64,6 @@ void AEndlessRunnerCharacter::SetupPlayerInputComponent(class UInputComponent* P
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	// PlayerInputComponent->BindAxis("MoveForward", this, &AEndlessRunnerCharacter::MoveForward);
-	// PlayerInputComponent->BindAxis("MoveRight", this, &AEndlessRunnerCharacter::MoveRight);
-
 	PlayerInputComponent->BindAction("Down", IE_Pressed, this, &AEndlessRunnerCharacter::MoveDown);
 	PlayerInputComponent->BindAction("Left", IE_Pressed, this, &AEndlessRunnerCharacter::MoveLeft);
 	PlayerInputComponent->BindAction("Right", IE_Pressed, this, &AEndlessRunnerCharacter::MoveRight);
@@ -103,22 +100,6 @@ void AEndlessRunnerCharacter::MoveRight()
 	LaneHandler->ChangeLane(EndlessRunnerEnums::EMovementDirection::RIGHT);
 }
 
-void AEndlessRunnerCharacter::LerpBetweenLanes(float DeltaTime) 
-{
-	// FVector CurrentLocation = GetActorLocation();
-	// float NewLocationY = LaneY[NewLane];
-	
-	// SetActorLocation(FVector(
-	// 	CurrentLocation.X,
-	// 	FMath::FInterpConstantTo(CurrentLocation.Y, NewLocationY, DeltaTime, ChangeLaneSpeed),
-	// 	CurrentLocation.Z
-	// ));
-
-
-	// if (FMath::Abs((NewLocationY - CurrentLocation.Y)) <= 0.01f) {
-	// 	bShouldSwitch = false;
-	// } 
-}
 
 void AEndlessRunnerCharacter::CancelSlide() 
 {
@@ -165,11 +146,6 @@ void AEndlessRunnerCharacter::SetMagnetStatus(bool bStatus)
 void AEndlessRunnerCharacter::Tick(float DeltaTime) 
 {
 	MoveForward(1.0f);
-
-	if (bShouldSwitch) {
-		LerpBetweenLanes(DeltaTime);
-
-	}
 }
 
 void AEndlessRunnerCharacter::MoveForward(float Value)
@@ -182,21 +158,6 @@ void AEndlessRunnerCharacter::MoveForward(float Value)
 
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		AddMovementInput(Direction, Value);
-	}
-}
-
-void AEndlessRunnerCharacter::MoveRight(float Value)
-{
-	if ( (Controller != NULL) && (Value != 0.0f) )
-	{
-		// find out which way is right
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
-		// get right vector 
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
 }

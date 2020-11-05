@@ -21,7 +21,7 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 
 void AEndlessRunnerGameMode::BeginPlay() 
 {
-	CurrentTiles = EndlessRunnerEnums::ETilesType::WALLRUNNING;
+	CurrentTiles = EndlessRunnerEnums::ETilesType::RUNNING;
 
 	for (uint32 i = 1; i <= 10; i++) {
 		SpawnTile();

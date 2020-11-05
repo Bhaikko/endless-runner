@@ -13,10 +13,6 @@ void ARunner::BeginPlay()
 {
     Super::BeginPlay();
 
-
-    JumpPos = ObstacleMesh->GetComponentLocation();
-    JumpPos.Z += 70.0f;
-
 }
 
 void ARunner::Tick(float DeltaTime) 
@@ -31,11 +27,13 @@ void ARunner::Tick(float DeltaTime)
     if (Distance <= 500.0f) {
         bJumping = true;
 
-        SetActorLocation(FVector(
-            ObstacleMesh->GetComponentLocation().X,
-            ObstacleMesh->GetComponentLocation().Y,
-            FMath::Lerp<float>(ObstacleMesh->GetComponentLocation().Z, JumpPos.Z, DeltaTime * 10.0f)
-        ));
+        // SetActorLocation(FVector(
+        //     ObstacleMesh->GetComponentLocation().X,
+        //     ObstacleMesh->GetComponentLocation().Y,
+        //     FMath::Lerp<float>(ObstacleMesh->GetComponentLocation().Z, JumpPos.Z, DeltaTime * 10.0f)
+        // ));
+
+        // Jump Code
         
     }
 }

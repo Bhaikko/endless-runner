@@ -18,19 +18,7 @@ AObstacle::AObstacle()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	RootComponent = Root;
-
-	CapsuleCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Collider"));
-	CapsuleCollider->SetupAttachment(Root);
-	CapsuleCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-	
-	ObstacleMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Obstacle Mesh"));
-	ObstacleMesh->SetupAttachment(Root);
-
 	bMoveTowardsPlayer = false;
-	MoveSpeed = 2.0f;
-
 
 }
 
@@ -39,7 +27,7 @@ void AObstacle::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CapsuleCollider->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OnHit);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OnHit);
 
 	PlayerReference = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	
@@ -56,11 +44,7 @@ void AObstacle::Tick(float DeltaTime)
 			Destroy();
 		}
 
-		SetActorLocation(FVector(
-			GetActorLocation().X - MoveSpeed * DeltaTime,
-			GetActorLocation().Y,
-			GetActorLocation().Z
-		));
+		MoveTowardsPlayer();
 	}
 
 }
@@ -73,5 +57,12 @@ void AObstacle::OnHit(UPrimitiveComponent* OverlappedComponent, class AActor* Ot
 	}
 
 	CollidedActor->HandleDeath();
+}
+
+void AObstacle::MoveTowardsPlayer() 
+{
+
+	AddMovementInput(FVector(-1.0f, 0.0f, 0.0f), 1.0f);
+	
 }
 

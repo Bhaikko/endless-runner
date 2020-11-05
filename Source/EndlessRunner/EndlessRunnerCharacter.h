@@ -32,9 +32,6 @@ protected:
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
 
-	/** Called for side to side input */
-	void MoveRight(float Value);
-
 	/** Handler for when a touch input begins. */
 	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
 
@@ -72,21 +69,23 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool IsSliding() const { return bSlide; }
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool IsWallRunning() const { return bWallRunning; }
+
 	void UpdateTiles();
 
 private:
 	int32 Lane;	// Index for current lane, the character is, 0 -> Left, 1 -> Middle, 2 -> Right
 	int32 NewLane;
 	float LaneY[3];
-	bool bShouldSwitch;
 
 	bool bSlide;
+	bool bWallRunning;
 
 	// Pickup Statistics
 	bool bMagnetActive;
 
 private:
-	void LerpBetweenLanes(float DeltaTime);
 
 	UFUNCTION()
 	void CancelSlide();
