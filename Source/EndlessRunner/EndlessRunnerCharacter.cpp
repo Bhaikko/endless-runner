@@ -19,8 +19,6 @@
 AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
-	GetCapsuleComponent()->SetVisibility(true);
-	GetCapsuleComponent()->SetHiddenInGame(false);
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;

@@ -69,24 +69,25 @@ void ARunningTile::SpawnObstacleInLane(UArrowComponent* Lane)
 
 	// Randomly Spawning Obstacle using Random Int 
 	float ChanceOfSpawning = FMath::RandRange(0.0f, 1.0f);
-
+	FVector Offset = FVector(0.0f, 0.0f, 60.0f);
 
 	if (ChanceOfSpawning >= 0.1f && ChanceOfSpawning <= 0.2f) {
-		AObstacle* SpawnedPipe = GetWorld()->SpawnActor<AObstacle>(
+		AObstacle* SpawnedRunner = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::RUNNER],
-			Lane->GetComponentLocation(),
+			Lane->GetComponentLocation() + Offset,
 			Lane->GetComponentRotation()
 		);
 	} else if (ChanceOfSpawning > 0.2f && ChanceOfSpawning <= 0.3f) {
-		AObstacle* SpawnedBox = GetWorld()->SpawnActor<AObstacle>(
+		AObstacle* SpawnedStoneGuy = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::STONEGUY],
-			Lane->GetComponentLocation(),
+			Lane->GetComponentLocation() + Offset,
 			Lane->GetComponentRotation()
 		);
+		
 	} else if (ChanceOfSpawning > 0.3f && ChanceOfSpawning <= 0.4f) {
-		AObstacle* SpawnedBox = GetWorld()->SpawnActor<AObstacle>(
+		AObstacle* SpawnedHands = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::HANDS],
-			Lane->GetComponentLocation(),
+			Lane->GetComponentLocation() + Offset,
 			Lane->GetComponentRotation()
 		);
 	} else if (ChanceOfSpawning > 0.4f && ChanceOfSpawning <= 0.5f) {

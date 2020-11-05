@@ -61,8 +61,7 @@ void AObstacle::OnHit(UPrimitiveComponent* OverlappedComponent, class AActor* Ot
 
 void AObstacle::MoveTowardsPlayer() 
 {
-
-	AddMovementInput(FVector(-1.0f, 0.0f, 0.0f), 1.0f);
+	AddMovementInput(FVector(-1.0f, 0.0f, 0.0f), 1.0f, true);
 	
 }
 
