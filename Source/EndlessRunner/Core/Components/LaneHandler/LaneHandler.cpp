@@ -3,6 +3,8 @@
 
 #include "LaneHandler.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 
 #include "EndlessRunner/EndlessRunnerGameMode.h"
 #include "EndlessRunner/EndlessRunnerCharacter.h"
@@ -25,8 +27,10 @@ void ULaneHandler::BeginPlay()
 
 	GameModeReference = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	RunnerCharacterReference = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	MovementComponent = Cast<UCharacterMovementComponent>(RunnerCharacterReference->GetComponentByClass(UCharacterMovementComponent::StaticClass()));
 	
-	Lanes.Push(FVector());
+	// Lanes.Push(FVector());
+	UpdateLanes();
 }
 
 
@@ -49,24 +53,39 @@ void ULaneHandler::LerpBetweenLanes(float DeltaTime)
 	FVector CurrentLocation = GetOwner()->GetActorLocation();
 	FVector NewLocation = Lanes[NewLaneZ * 3 + NewLaneY];
 
-	GetOwner()->SetActorLocation(FVector(
-		CurrentLocation.X,
-		FMath::FInterpConstantTo(CurrentLocation.Y, NewLocation.Y, DeltaTime, ChangeLaneSpeed),
-		// FMath::FInterpConstantTo(CurrentLocation.Z, NewLocation.Z, DeltaTime, ChangeLaneSpeed)
-		CurrentLocation.Z
-	));
+	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING) {
+		GetOwner()->SetActorLocation(FVector(
+			CurrentLocation.X,
+			FMath::FInterpConstantTo(CurrentLocation.Y, NewLocation.Y, DeltaTime, ChangeLaneSpeed),
+			FMath::FInterpConstantTo(CurrentLocation.Z, NewLocation.Z, DeltaTime, ChangeLaneSpeed)
+		));
+	} else {
+		GetOwner()->SetActorLocation(FVector(
+			CurrentLocation.X,
+			FMath::FInterpConstantTo(CurrentLocation.Y, NewLocation.Y, DeltaTime, ChangeLaneSpeed),
+			CurrentLocation.Z
+		));
+	}
 
-	CurrentLocation.X = 0.0f;
-	NewLocation.X = 0.0f;
-	float Distance = FVector::Distance(NewLocation, CurrentLocation);
-	if (Distance <= 0.01f) {
+
+	float Distance = FMath::Abs(CurrentLocation.Y - NewLocation.Y);
+
+	if (Distance <= 5.0f) {
 		bShouldSwitch = false;
 	} 
+	
 }
 
 void ULaneHandler::UpdateLanes() 
 {
 	Lanes = GameModeReference->GetLaneVectors();
+
+	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING) {
+		RunnerCharacterReference->SetWallRunning(true);
+		MovementComponent->GravityScale = 0.0f;
+	} else {
+		MovementComponent->GravityScale = 1.0f;
+	}
 }
 
 void ULaneHandler::ChangeLane(EndlessRunnerEnums::EMovementDirection Direction) 
@@ -109,7 +128,9 @@ void ULaneHandler::MoveLeft()
 			);
 			CurrentLaneY = NewLaneY;
 			NewLaneZ = CurrentLaneZ;
-			
+
+			// RunnerCharacterReference->SetWallRunning(false);
+
 			break;
 
 		case EndlessRunnerEnums::ETilesType::GLIDING:
@@ -143,6 +164,8 @@ void ULaneHandler::MoveRight()
 			);
 			CurrentLaneY = NewLaneY;
 			NewLaneZ = CurrentLaneZ;
+			// RunnerCharacterReference->SetWallRunning(false);
+
 			
 			break;
 

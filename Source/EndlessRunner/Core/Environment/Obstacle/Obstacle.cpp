@@ -27,6 +27,7 @@ void AObstacle::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OnHit);
 
 	PlayerReference = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);

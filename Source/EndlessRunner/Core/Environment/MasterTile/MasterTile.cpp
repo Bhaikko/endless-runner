@@ -95,6 +95,7 @@ void AMasterTile::TileSpawnHandler(
 
 void AMasterTile::FallHandler(UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) 
 {
+	// TODO, Kill Fallen Enemies Too
 	AEndlessRunnerCharacter* CollidedActor = Cast<AEndlessRunnerCharacter>(OtherActor);
 	if (!CollidedActor) {
 		return;

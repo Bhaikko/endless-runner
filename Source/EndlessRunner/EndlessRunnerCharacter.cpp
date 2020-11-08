@@ -46,6 +46,7 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 	bSlide = false;
 
 	bMagnetActive = false;
+	bWallRunning = false;
 
 }
 
@@ -139,6 +140,11 @@ void AEndlessRunnerCharacter::HandleDeath()
 void AEndlessRunnerCharacter::SetMagnetStatus(bool bStatus) 
 {
 	bMagnetActive = bStatus;
+}
+
+void AEndlessRunnerCharacter::SetWallRunning(bool bStatus) 
+{
+	bWallRunning = bStatus;
 }
 
 void AEndlessRunnerCharacter::Tick(float DeltaTime) 

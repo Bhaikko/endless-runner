@@ -42,6 +42,7 @@ protected:
 	void MoveRight();
 	void MoveDown();
 
+public:
 	virtual void Jump() override;
 
 protected:
@@ -75,10 +76,6 @@ public:
 	void UpdateTiles();
 
 private:
-	int32 Lane;	// Index for current lane, the character is, 0 -> Left, 1 -> Middle, 2 -> Right
-	int32 NewLane;
-	float LaneY[3];
-
 	bool bSlide;
 	bool bWallRunning;
 
@@ -93,6 +90,7 @@ private:
 public:
 	void HandleDeath();
 	void SetMagnetStatus(bool bStatus);
+	void SetWallRunning(bool bStatus);
 
 };
 

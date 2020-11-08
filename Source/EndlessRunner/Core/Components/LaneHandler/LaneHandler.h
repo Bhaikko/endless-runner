@@ -33,6 +33,7 @@ private:
 
 	class AEndlessRunnerGameMode* GameModeReference;
 	class AEndlessRunnerCharacter* RunnerCharacterReference;
+	class UCharacterMovementComponent* MovementComponent;
 
 private:
 	void LerpBetweenLanes(float DeltaTime);
