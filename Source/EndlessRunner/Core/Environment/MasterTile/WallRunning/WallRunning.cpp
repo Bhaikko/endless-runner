@@ -4,6 +4,9 @@
 #include "WallRunning.h"
 #include "Components/ArrowComponent.h"
 
+#include "EndlessRunner/Core/Environment/Obstacle/Obstacle.h"
+#include "EndlessRunner/Core/Environment/Pickup/Pickup.h"
+
 AWallRunning::AWallRunning() 
 {
     LeftWall = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Left Wall"));
@@ -26,6 +29,8 @@ void AWallRunning::BeginPlay()
 {
     Super::BeginPlay();
     DespawnOneWall();
+
+    SpawnObstacles();
 }
 
 void AWallRunning::Tick(float DeltaTime) 
@@ -35,7 +40,39 @@ void AWallRunning::Tick(float DeltaTime)
 
 void AWallRunning::SpawnObstacleInLane(class UArrowComponent* Lane) 
 {
-    
+    // Flyers, Magnet and coins spawnable
+    if (
+        !ObstacleClasses[EObstacle::FLYER] ||
+        !ObstacleClasses[EPickup::COIN] ||
+        !ObstacleClasses[EPickup::MAGNET]
+    ) {
+        UE_LOG(LogTemp, Warning, TEXT("One of Obstacle or Pickup class Missing"));
+        return;
+    }
+
+    float ChanceOfSpawning = FMath::RandRange(0.0f, 1.0f);
+    FVector Offset = FVector(0.0f, 0.0f, 600.0f);
+
+    if (ChanceOfSpawning >= 0.1f && ChanceOfSpawning <= 0.2f) {
+		AObstacle* SpawnedRunner = GetWorld()->SpawnActor<AObstacle>(
+			ObstacleClasses[EObstacle::FLYER],
+			Lane->GetComponentLocation() + Offset,
+			Lane->GetComponentRotation()
+		);
+	} else if (ChanceOfSpawning > 0.2f && ChanceOfSpawning <= 0.7f) {
+		APickup* SpawnedCoin = GetWorld()->SpawnActor<APickup>(
+			PickupClasses[EPickup::COIN],
+			Lane->GetComponentLocation(),
+			Lane->GetComponentRotation()
+		);
+		
+	} else if (ChanceOfSpawning > 0.9f && ChanceOfSpawning <= 1.0f) {
+		APickup* SpawnedCoin = GetWorld()->SpawnActor<APickup>(
+			PickupClasses[EPickup::MAGNET],
+			Lane->GetComponentLocation(),
+			Lane->GetComponentRotation()
+		);
+	}
 }
 
 void AWallRunning::DespawnOneWall() 
@@ -57,7 +94,8 @@ void AWallRunning::DespawnOneWall()
 
 void AWallRunning::SpawnObstacles() 
 {
-    
+    SpawnObstacleInLane(Lane0);
+    SpawnObstacleInLane(Lane1);
 }
 
 TArray<FVector> AWallRunning::GetLanes() 

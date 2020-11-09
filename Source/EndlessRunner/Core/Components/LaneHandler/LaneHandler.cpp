@@ -220,7 +220,7 @@ void ULaneHandler::WallDetection(FVector Direction)
 
 	if (!HadCollision) {
 		// TODO, Handle Death when Switching
-		UE_LOG(LogTemp, Warning, TEXT("Killing Player"));
+		// UE_LOG(LogTemp, Warning, TEXT("Killing Player"));
 		// RunnerCharacterReference->HandleDeath();
 	} 
 }

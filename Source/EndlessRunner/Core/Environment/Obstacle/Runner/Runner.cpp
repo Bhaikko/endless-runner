@@ -34,6 +34,7 @@ void ARunner::Tick(float DeltaTime)
         // ));
 
         // Jump Code
+        Jump();
         
     }
 }

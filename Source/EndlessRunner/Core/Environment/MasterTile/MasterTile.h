@@ -75,7 +75,8 @@ protected:
 	{
 		RUNNER = 0,
 		STONEGUY,
-		HANDS
+		HANDS,
+		FLYER
 	};
 
 	enum EPickup
