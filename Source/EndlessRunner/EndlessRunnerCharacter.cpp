@@ -47,6 +47,7 @@ AEndlessRunnerCharacter::AEndlessRunnerCharacter()
 
 	bMagnetActive = false;
 	bWallRunning = false;
+	bDead = false;
 
 }
 
@@ -118,7 +119,7 @@ void AEndlessRunnerCharacter::CancelSlide()
 
 void AEndlessRunnerCharacter::HandleDeath() 
 {
-
+	bDead = true;
 	GetMesh()->SetSimulatePhysics(true);
 	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
 	CharacterMovementComponent->DisableMovement();

@@ -73,11 +73,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool IsWallRunning() const { return bWallRunning; }
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool IsDead() const { return bDead; }
+
 	void UpdateTiles();
 
 private:
 	bool bSlide;
 	bool bWallRunning;
+	bool bDead;
 
 	// Pickup Statistics
 	bool bMagnetActive;

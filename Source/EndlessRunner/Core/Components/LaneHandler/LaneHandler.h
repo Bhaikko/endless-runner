@@ -49,8 +49,13 @@ private:
 	void MoveUp();
 	void MoveDown();
 
+	void WallDetection(FVector Direction);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
 	float ChangeLaneSpeed;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
+	float RayTraceRange;
 		
 };

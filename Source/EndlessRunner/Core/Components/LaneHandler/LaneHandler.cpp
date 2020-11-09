@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "DrawDebugHelpers.h"
 
 #include "EndlessRunner/EndlessRunnerGameMode.h"
 #include "EndlessRunner/EndlessRunnerCharacter.h"
@@ -17,6 +18,7 @@ ULaneHandler::ULaneHandler()
 	CurrentLaneZ = 1;
 
 	ChangeLaneSpeed = 100.0f;
+	RayTraceRange = 10.0f;
 }
 
 
@@ -29,7 +31,6 @@ void ULaneHandler::BeginPlay()
 	RunnerCharacterReference = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	MovementComponent = Cast<UCharacterMovementComponent>(RunnerCharacterReference->GetComponentByClass(UCharacterMovementComponent::StaticClass()));
 	
-	// Lanes.Push(FVector());
 	UpdateLanes();
 }
 
@@ -39,8 +40,23 @@ void ULaneHandler::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if (RunnerCharacterReference->IsDead()) {
+		return;
+	}
+
 	if (bShouldSwitch) {
 		LerpBetweenLanes(DeltaTime);
+	}
+
+	if (
+		GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING &&
+		RunnerCharacterReference->IsWallRunning()
+	) {
+		FVector Direction = FVector(0.0f, -1.0f, 0.0f);	// Left
+		if (RunnerCharacterReference->GetActorLocation().Y > 0.0f) {
+			Direction.Y = 1.0f;
+		}
+		WallDetection(Direction);
 	}
 }
 
@@ -186,5 +202,26 @@ void ULaneHandler::MoveUp()
 void ULaneHandler::MoveDown() 
 {
 	
+}
+
+void ULaneHandler::WallDetection(FVector Direction) 
+{
+	FHitResult HitResult;
+	
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(RunnerCharacterReference);
+
+	FVector Start = RunnerCharacterReference->GetActorLocation();
+	FVector End = Start + Direction * RayTraceRange;
+
+	// DrawDebugLine(GetWorld(), Start, End, FColor::Red, true);
+
+	bool HadCollision = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Pawn, Params);
+
+	if (!HadCollision) {
+		// TODO, Handle Death when Switching
+		UE_LOG(LogTemp, Warning, TEXT("Killing Player"));
+		// RunnerCharacterReference->HandleDeath();
+	} 
 }
 
