@@ -14,10 +14,19 @@ class ENDLESSRUNNER_API AFlyers : public AObstacle
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void BeginPlay() override;
+
 public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	void MoveDown();
+	void MoveDown(float DeltaTime);
+
+	class UCharacterMovementComponent* MovementComponent;
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	float DropSpeed;
 	
 };

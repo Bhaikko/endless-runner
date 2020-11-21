@@ -53,13 +53,13 @@ void AWallRunning::SpawnObstacleInLane(class UArrowComponent* Lane)
     float ChanceOfSpawning = FMath::RandRange(0.0f, 1.0f);
     FVector Offset = FVector(0.0f, 0.0f, 600.0f);
 
-    if (ChanceOfSpawning >= 0.1f && ChanceOfSpawning <= 0.2f) {
+    if (ChanceOfSpawning >= 0.1f && ChanceOfSpawning <= 0.3f) {
 		AObstacle* SpawnedRunner = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::FLYER],
 			Lane->GetComponentLocation() + Offset,
 			Lane->GetComponentRotation()
 		);
-	} else if (ChanceOfSpawning > 0.2f && ChanceOfSpawning <= 0.7f) {
+	} else if (ChanceOfSpawning > 0.3f && ChanceOfSpawning <= 0.7f) {
 		APickup* SpawnedCoin = GetWorld()->SpawnActor<APickup>(
 			PickupClasses[EPickup::COIN],
 			Lane->GetComponentLocation(),
