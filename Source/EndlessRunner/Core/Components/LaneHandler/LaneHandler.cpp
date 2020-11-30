@@ -69,7 +69,10 @@ void ULaneHandler::LerpBetweenLanes(float DeltaTime)
 	FVector CurrentLocation = GetOwner()->GetActorLocation();
 	FVector NewLocation = Lanes[NewLaneZ * 3 + NewLaneY];
 
-	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING) {
+	if (
+		GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING || 
+		GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::GLIDING
+	) {
 		GetOwner()->SetActorLocation(FVector(
 			CurrentLocation.X,
 			FMath::FInterpConstantTo(CurrentLocation.Y, NewLocation.Y, DeltaTime, ChangeLaneSpeed),
@@ -84,7 +87,8 @@ void ULaneHandler::LerpBetweenLanes(float DeltaTime)
 	}
 
 
-	float Distance = FMath::Abs(CurrentLocation.Y - NewLocation.Y);
+	// float Distance = FMath::Abs(CurrentLocation.Y - NewLocation.Y);
+	float Distance = (NewLocation - CurrentLocation).Size();
 
 	if (Distance <= 5.0f) {
 		bShouldSwitch = false;
@@ -96,7 +100,10 @@ void ULaneHandler::UpdateLanes()
 {
 	Lanes = GameModeReference->GetLaneVectors();
 
-	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING) {
+	if (
+		GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING || 
+		GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::GLIDING
+	) {
 		RunnerCharacterReference->SetWallRunning(true);
 		MovementComponent->GravityScale = 0.0f;
 	} else {
@@ -150,7 +157,15 @@ void ULaneHandler::MoveLeft()
 			break;
 
 		case EndlessRunnerEnums::ETilesType::GLIDING:
+			NewLaneY = FMath::Clamp<float>(
+				CurrentLaneY - 1,
+				0,
+				2
+			);
 
+			CurrentLaneY = NewLaneY;
+
+			NewLaneZ = CurrentLaneZ;
 			break;
 
 		default:
@@ -186,7 +201,14 @@ void ULaneHandler::MoveRight()
 			break;
 
 		case EndlessRunnerEnums::ETilesType::GLIDING:
+			NewLaneY = FMath::Clamp<float>(
+				CurrentLaneY + 1,
+				0,
+				2
+			);
 
+			CurrentLaneY = NewLaneY;
+			NewLaneZ = CurrentLaneZ;
 			break;
 
 		default:
@@ -196,12 +218,44 @@ void ULaneHandler::MoveRight()
 
 void ULaneHandler::MoveUp() 
 {
-	
+	switch (GameModeReference->GetCurrentTileType()) {
+		case EndlessRunnerEnums::ETilesType::GLIDING:
+			NewLaneY = CurrentLaneY;
+
+			NewLaneZ = FMath::Clamp<float>(
+				CurrentLaneZ - 1,
+				0,
+				2
+			);
+
+			CurrentLaneZ = NewLaneZ;
+
+			break;
+
+		default:
+			break;
+	}
 }
 
 void ULaneHandler::MoveDown() 
 {
-	
+	switch (GameModeReference->GetCurrentTileType()) {
+		case EndlessRunnerEnums::ETilesType::GLIDING:
+			NewLaneY = CurrentLaneY;
+
+			NewLaneZ = FMath::Clamp<float>(
+				CurrentLaneZ + 1,
+				0,
+				2
+			);
+
+			CurrentLaneZ = NewLaneZ;
+
+			break;
+
+		default:
+			break;
+	}
 }
 
 void ULaneHandler::WallDetection(FVector Direction) 

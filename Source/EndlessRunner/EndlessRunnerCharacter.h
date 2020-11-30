@@ -41,6 +41,7 @@ protected:
 	void MoveLeft();
 	void MoveRight();
 	void MoveDown();
+	void MoveUp();
 
 public:
 	virtual void Jump() override;

@@ -21,7 +21,7 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 
 void AEndlessRunnerGameMode::BeginPlay() 
 {
-	CurrentTiles = EndlessRunnerEnums::ETilesType::WALLRUNNING;
+	CurrentTiles = EndlessRunnerEnums::ETilesType::GLIDING;
 
 	for (uint32 i = 1; i <= 10; i++) {
 		SpawnTile();
@@ -67,7 +67,7 @@ void AEndlessRunnerGameMode::FindReferenceOfSaveGameHandler()
 
 void AEndlessRunnerGameMode::SpawnTile() 
 {
-	if (!TileClasses[0] || !TileClasses[1]) {
+	if (!TileClasses[0] || !TileClasses[1] || !TileClasses[2]) {
 		UE_LOG(LogTemp, Warning, TEXT("No Tile class Specified!!"));
 		return;
 	}
@@ -91,14 +91,14 @@ void AEndlessRunnerGameMode::SpawnTile()
 
 			break;
 
-		// case EndlessRunnerEnums::ETilesType::GLIDING:
-		// 	CurrentSpawnedTile = GetWorld()->SpawnActor<AMasterTile>(
-		// 		TileClasses[2],
-		// 		NextSpawnPointLocation,
-		// 		FRotator(0.0f, 0.0f, 0.0f)
-		// 	);
+		case EndlessRunnerEnums::ETilesType::GLIDING:
+			CurrentSpawnedTile = GetWorld()->SpawnActor<AMasterTile>(
+				TileClasses[2],
+				NextSpawnPointLocation,
+				FRotator(0.0f, 0.0f, 0.0f)
+			);
 
-		// 	break;
+			break;
 
 		default:
 			break;

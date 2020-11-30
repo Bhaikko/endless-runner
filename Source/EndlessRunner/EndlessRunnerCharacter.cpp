@@ -64,6 +64,7 @@ void AEndlessRunnerCharacter::SetupPlayerInputComponent(class UInputComponent* P
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	PlayerInputComponent->BindAction("Up", IE_Pressed, this, &AEndlessRunnerCharacter::MoveUp);
 	PlayerInputComponent->BindAction("Down", IE_Pressed, this, &AEndlessRunnerCharacter::MoveDown);
 	PlayerInputComponent->BindAction("Left", IE_Pressed, this, &AEndlessRunnerCharacter::MoveLeft);
 	PlayerInputComponent->BindAction("Right", IE_Pressed, this, &AEndlessRunnerCharacter::MoveRight);
@@ -98,6 +99,11 @@ void AEndlessRunnerCharacter::MoveLeft()
 void AEndlessRunnerCharacter::MoveRight() 
 {
 	LaneHandler->ChangeLane(EndlessRunnerEnums::EMovementDirection::RIGHT);
+}
+
+void AEndlessRunnerCharacter::MoveUp() 
+{
+	LaneHandler->ChangeLane(EndlessRunnerEnums::EMovementDirection::UP);
 }
 
 
@@ -167,33 +173,37 @@ void AEndlessRunnerCharacter::MoveForward(float Value)
 
 void AEndlessRunnerCharacter::MoveDown() 
 {
+	AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	
-	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
+	if (GameMode->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::RUNNING) {
+		UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(GetMovementComponent());
+		if (CharacterMovementComponent->IsFalling()) {
+			CharacterMovementComponent->AddImpulse(FVector(0.0f, 0.0f, -3000.0f), true);
+		} else {
+			if (bSlide) {
+				return;
+			}
+			
+			bSlide = true;
 
-	if (CharacterMovementComponent->IsFalling()) {
-		CharacterMovementComponent->AddImpulse(FVector(0.0f, 0.0f, -3000.0f), true);
-	} else {
-		if (bSlide) {
-			return;
+			GetCapsuleComponent()->SetRelativeScale3D(FVector(
+				1.0f,
+				1.0f,
+				0.25f 
+			));
+
+			GetMesh()->SetRelativeScale3D(FVector(
+				1.0f,
+				1.0f,
+				3.0f 
+			));
+
+			FTimerHandle SlideCancelHandler;
+
+			GetWorld()->GetTimerManager().SetTimer(SlideCancelHandler, this, &AEndlessRunnerCharacter::CancelSlide, SlideDuration);
 		}
-		
-		bSlide = true;
-
-		GetCapsuleComponent()->SetRelativeScale3D(FVector(
-			1.0f,
-			1.0f,
-			0.25f 
-		));
-
-		GetMesh()->SetRelativeScale3D(FVector(
-			1.0f,
-			1.0f,
-			3.0f 
-		));
-
-		FTimerHandle SlideCancelHandler;
-
-		GetWorld()->GetTimerManager().SetTimer(SlideCancelHandler, this, &AEndlessRunnerCharacter::CancelSlide, SlideDuration);
+	} else {
+		LaneHandler->ChangeLane(EndlessRunnerEnums::EMovementDirection::DOWN);
 	}
 }
 
