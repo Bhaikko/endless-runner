@@ -45,7 +45,9 @@ void AObstacle::Tick(float DeltaTime)
 			Destroy();
 		}
 
-		MoveTowardsPlayer();
+		if (bMoveTowardsPlayer) {
+			MoveTowardsPlayer();
+		}
 	}
 
 }

@@ -48,14 +48,46 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
 	class UArrowComponent* Lane8;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacle")
+	class UArrowComponent* Point0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacle")
+	class UArrowComponent* Point1;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacle")
+	class UArrowComponent* Point2;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacle")
+	class UArrowComponent* Point3;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacle")
+	class UArrowComponent* Point4;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacle")
+	class UArrowComponent* Point5;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Obstacle")
+	class UArrowComponent* Point6;
+
 private:
 	UFUNCTION()
 	void SpawnObstaclesInLane(UArrowComponent* Lane);
 
+	UFUNCTION()
+	void SpawnPickupInLane(UArrowComponent* Lane);
+
 protected:
 	virtual void SpawnObstacles() override;
 
+	virtual void SpawnPickup();
+
 public:
 	virtual TArray<FVector> GetLanes() override;
+
+private:
+	float DistanceBetween;
+	bool bSpawned;
+
+	class AEndlessRunnerCharacter* PlayerReference;
 	
 };
