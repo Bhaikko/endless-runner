@@ -100,14 +100,19 @@ void ULaneHandler::UpdateLanes()
 {
 	Lanes = GameModeReference->GetLaneVectors();
 
-	if (
-		GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING || 
-		GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::GLIDING
-	) {
-		RunnerCharacterReference->SetWallRunning(true);
-		MovementComponent->GravityScale = 0.0f;
-	} else {
+	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::RUNNING) {
+		RunnerCharacterReference->SetWallRunning(false);
+		RunnerCharacterReference->SetGliding(false);
 		MovementComponent->GravityScale = 1.0f;
+	} else {
+		MovementComponent->GravityScale = 0.0f;
+		if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::WALLRUNNING) {
+			RunnerCharacterReference->SetWallRunning(true);
+			RunnerCharacterReference->SetGliding(false);
+		} else {
+			RunnerCharacterReference->SetGliding(true);
+			RunnerCharacterReference->SetWallRunning(false);
+		}
 	}
 }
 

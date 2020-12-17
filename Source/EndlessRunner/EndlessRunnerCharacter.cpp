@@ -154,6 +154,11 @@ void AEndlessRunnerCharacter::SetWallRunning(bool bStatus)
 	bWallRunning = bStatus;
 }
 
+void AEndlessRunnerCharacter::SetGliding(bool bStatus) 
+{
+	bGliding = bStatus;
+}
+
 void AEndlessRunnerCharacter::Tick(float DeltaTime) 
 {
 	MoveForward(1.0f);

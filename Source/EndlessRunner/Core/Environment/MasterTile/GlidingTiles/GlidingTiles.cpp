@@ -90,10 +90,14 @@ void AGlidingTiles::Tick(float DeltaTime)
     }
 
     DistanceBetween = GetActorLocation().X - PlayerReference->GetActorLocation().X;
-    if (DistanceBetween <= 1200.0f) {
+    UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), DistanceBetween);
+    if (DistanceBetween <= 1500.0f) {
         AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
     
-        SpawnObstacles();	
+        if (GameMode->GetScore() >= 2) {
+            SpawnObstacles();	
+
+        }
         
 
         bSpawned = true;
@@ -122,7 +126,7 @@ void AGlidingTiles::SpawnObstaclesInLane(UArrowComponent* Lane)
 		AObstacle* SpawnedHand = GetWorld()->SpawnActor<AObstacle>(
 			ObstacleClasses[EObstacle::RUNNER],
 			Lane->GetComponentLocation(),
-			Lane->GetComponentRotation() + FRotator(90.0f, 0.0f, 0.0f)
+			Lane->GetComponentRotation()
 		);
 
        

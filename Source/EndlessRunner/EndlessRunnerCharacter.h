@@ -75,6 +75,9 @@ public:
 	FORCEINLINE bool IsWallRunning() const { return bWallRunning; }
 
 	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool IsGliding() const { return bGliding; }
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool IsDead() const { return bDead; }
 
 	void UpdateTiles();
@@ -82,6 +85,7 @@ public:
 private:
 	bool bSlide;
 	bool bWallRunning;
+	bool bGliding;
 	bool bDead;
 
 	// Pickup Statistics
@@ -96,6 +100,7 @@ public:
 	void HandleDeath();
 	void SetMagnetStatus(bool bStatus);
 	void SetWallRunning(bool bStatus);
+	void SetGliding(bool bStatus);
 
 };
 
