@@ -11,6 +11,8 @@
 #include "EndlessRunner/Core/Environment/MasterTile/RunningTile/RunningTile.h"
 #include "EndlessRunner/Core/Environment/MasterTile/WallRunning/WallRunning.h"
 
+#include "EndlessRunner/Core/Environment/Follower/Follower.h"
+
 AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 {
 	NextSpawnPointLocation = FVector(0.0f, 0.0f, 0.0f);
@@ -21,7 +23,18 @@ AEndlessRunnerGameMode::AEndlessRunnerGameMode()
 
 void AEndlessRunnerGameMode::BeginPlay() 
 {
-	CurrentTiles = EndlessRunnerEnums::ETilesType::GLIDING;
+	// CurrentTiles = EndlessRunnerEnums::ETilesType::GLIDING;
+	// CurrentTiles = EndlessRunnerEnums::ETilesType::RUNNING;
+	CurrentTiles = EndlessRunnerEnums::ETilesType::WALLRUNNING;
+
+	AEndlessRunnerCharacter* RunnerCharacterReference = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (CurrentTiles == EndlessRunnerEnums::ETilesType::GLIDING) {
+		AFollower* SpawnedFollower = GetWorld()->SpawnActor<AFollower>(
+			FollowerClass,
+			RunnerCharacterReference->GetActorLocation() + FVector(-50.0f, -50.0f, -50.0f),
+			FRotator(0.0f, -90.0f, 0.0f)
+		);
+	}
 
 	for (uint32 i = 1; i <= 10; i++) {
 		SpawnTile();

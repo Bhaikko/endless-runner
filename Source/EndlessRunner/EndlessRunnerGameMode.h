@@ -31,6 +31,9 @@ protected:
 	*/
 	UPROPERTY(EditDefaultsOnly, Category = "Tiles Configuration")
 	TArray<TSubclassOf<class AMasterTile>> TileClasses;	
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Follower Config")
+	TSubclassOf<class AFollower> FollowerClass;	
 
 private:
 	FVector NextSpawnPointLocation;
