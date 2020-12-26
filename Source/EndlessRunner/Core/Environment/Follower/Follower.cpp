@@ -32,6 +32,11 @@ void AFollower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	MoveTowardsPlayer(DeltaTime);
+}
+
+void AFollower::MoveTowardsPlayer(float DeltaTime) 
+{
 	float CurrentX = GetActorLocation().X;
 
 	if (bShouldFollow) {
@@ -41,16 +46,19 @@ void AFollower::Tick(float DeltaTime)
 			RunnerCharacterReference->GetActorLocation().Z
 		));
 	}
-
+	
 }
 
-void AFollower::MoveTowardsPlayer(float DeltaTime) 
+void AFollower::Destroy() 
 {
-	
+	Destroy();
 }
 
 void AFollower::StopFollowing() 
 {
 	bShouldFollow = false;
+
+	FTimerHandle DestroyHandler;
+	GetWorld()->GetTimerManager().SetTimer(DestroyHandler, this, &AFollower::Destroy, 0.0f);
 }
 

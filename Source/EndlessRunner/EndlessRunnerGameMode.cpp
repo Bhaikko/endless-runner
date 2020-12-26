@@ -25,16 +25,7 @@ void AEndlessRunnerGameMode::BeginPlay()
 {
 	// CurrentTiles = EndlessRunnerEnums::ETilesType::GLIDING;
 	// CurrentTiles = EndlessRunnerEnums::ETilesType::RUNNING;
-	CurrentTiles = EndlessRunnerEnums::ETilesType::WALLRUNNING;
-
-	AEndlessRunnerCharacter* RunnerCharacterReference = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (CurrentTiles == EndlessRunnerEnums::ETilesType::GLIDING) {
-		AFollower* SpawnedFollower = GetWorld()->SpawnActor<AFollower>(
-			FollowerClass,
-			RunnerCharacterReference->GetActorLocation() + FVector(-50.0f, -50.0f, -50.0f),
-			FRotator(0.0f, -90.0f, 0.0f)
-		);
-	}
+	CurrentTiles = EndlessRunnerEnums::ETilesType::RUNNING;
 
 	for (uint32 i = 1; i <= 10; i++) {
 		SpawnTile();
@@ -46,6 +37,39 @@ void AEndlessRunnerGameMode::BeginPlay()
 void AEndlessRunnerGameMode::IncreaseScore(int32 ScoreToAdd) 
 {
 	Points += (ScoreToAdd * PointsMultiplier);
+
+	if (Points % 3 == 0) {
+		ChangeTiles();
+	}
+}
+
+void AEndlessRunnerGameMode::ChangeTiles()
+{
+	int32 ChangeRandomInteger = FMath::RandRange(1, 3);
+	AEndlessRunnerCharacter* RunnerCharacterReference = Cast<AEndlessRunnerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	if (ChangeRandomInteger == 1) {
+		CurrentTiles = EndlessRunnerEnums::ETilesType::RUNNING;
+	} else if (ChangeRandomInteger == 2) {
+		CurrentTiles = EndlessRunnerEnums::ETilesType::GLIDING;
+
+		if (!SpawnedFollower) {
+			SpawnedFollower = GetWorld()->SpawnActor<AFollower>(
+				FollowerClass,
+				RunnerCharacterReference->GetActorLocation() + FVector(-50.0f, -50.0f, -50.0f),
+				FRotator(0.0f, -90.0f, 0.0f)
+			);
+		}
+	} else {
+		CurrentTiles = EndlessRunnerEnums::ETilesType::WALLRUNNING;
+	}
+}
+
+void AEndlessRunnerGameMode::DeleteFollower() 
+{
+	if (SpawnedFollower) {
+		SpawnedFollower->StopFollowing();
+	}
 }
 
 void AEndlessRunnerGameMode::IncreaseCoins(int32 CoinsToAdd) 

@@ -70,9 +70,17 @@ private:
 	EndlessRunnerEnums::ETilesType CurrentTiles;
 	class AMasterTile* CurrentSpawnedTile;
 
+	class AFollower* SpawnedFollower;
+
 private:
 	UFUNCTION()
 	void FindReferenceOfSaveGameHandler();
+
+	UFUNCTION()
+	void ChangeTiles();
+
+	UFUNCTION()
+	void DeleteFollower();
 
 };
 

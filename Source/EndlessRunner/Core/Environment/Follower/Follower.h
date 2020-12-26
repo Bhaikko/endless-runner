@@ -34,6 +34,10 @@ private:
 
 	bool bShouldFollow;
 
+	UFUNCTION()
+	virtual void Destroy();
+
+
 public:
 	void StopFollowing();
 
