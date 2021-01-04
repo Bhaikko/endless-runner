@@ -90,7 +90,6 @@ void AGlidingTiles::Tick(float DeltaTime)
     }
 
     DistanceBetween = GetActorLocation().X - PlayerReference->GetActorLocation().X;
-    UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), DistanceBetween);
     if (DistanceBetween <= 1500.0f) {
         AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
     

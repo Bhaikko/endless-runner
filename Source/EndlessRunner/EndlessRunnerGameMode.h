@@ -31,9 +31,6 @@ protected:
 	*/
 	UPROPERTY(EditDefaultsOnly, Category = "Tiles Configuration")
 	TArray<TSubclassOf<class AMasterTile>> TileClasses;	
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Follower Config")
-	TSubclassOf<class AFollower> FollowerClass;	
 
 private:
 	FVector NextSpawnPointLocation;
@@ -58,11 +55,14 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE int32 GetHighScore() const { return SaveGameHandler->GetHighScore(); }
 
-	// UFUNCTION()
 	FORCEINLINE EndlessRunnerEnums::ETilesType GetCurrentTileType() const { return CurrentTiles; }
 
-	// UFUNCTION()
 	TArray<FVector> GetLaneVectors();
+
+	class UArrowComponent* GetTileComponentBeforeChanged();
+
+	void PopSpawnPoint();
+
 
 private:
 	ASaveGameHandler* SaveGameHandler;
@@ -70,7 +70,7 @@ private:
 	EndlessRunnerEnums::ETilesType CurrentTiles;
 	class AMasterTile* CurrentSpawnedTile;
 
-	class AFollower* SpawnedFollower;
+	TQueue<class UArrowComponent*> TileComponentBeforeChangedQueue;
 
 private:
 	UFUNCTION()

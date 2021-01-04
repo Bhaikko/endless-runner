@@ -13,6 +13,7 @@ AFollower::AFollower()
 	PrimaryActorTick.bCanEverTick = true;
 
 	FollowerMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FollowerMesh"));
+	RootComponent = FollowerMesh;
 	bShouldFollow = true;
 
 	ChaseSpeed = 100.0f;
@@ -59,6 +60,6 @@ void AFollower::StopFollowing()
 	bShouldFollow = false;
 
 	FTimerHandle DestroyHandler;
-	GetWorld()->GetTimerManager().SetTimer(DestroyHandler, this, &AFollower::Destroy, 0.0f);
+	GetWorld()->GetTimerManager().SetTimer(DestroyHandler, this, &AFollower::Destroy, 2.0f);
 }
 

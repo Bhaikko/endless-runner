@@ -40,6 +40,8 @@ void AEndlessRunnerGameMode::IncreaseScore(int32 ScoreToAdd)
 
 	if (Points % 3 == 0) {
 		ChangeTiles();
+
+		TileComponentBeforeChangedQueue.Enqueue(CurrentSpawnedTile->GetSpawnPoint());
 	}
 }
 
@@ -52,23 +54,8 @@ void AEndlessRunnerGameMode::ChangeTiles()
 		CurrentTiles = EndlessRunnerEnums::ETilesType::RUNNING;
 	} else if (ChangeRandomInteger == 2) {
 		CurrentTiles = EndlessRunnerEnums::ETilesType::GLIDING;
-
-		if (!SpawnedFollower) {
-			SpawnedFollower = GetWorld()->SpawnActor<AFollower>(
-				FollowerClass,
-				RunnerCharacterReference->GetActorLocation() + FVector(-50.0f, -50.0f, -50.0f),
-				FRotator(0.0f, -90.0f, 0.0f)
-			);
-		}
 	} else {
 		CurrentTiles = EndlessRunnerEnums::ETilesType::WALLRUNNING;
-	}
-}
-
-void AEndlessRunnerGameMode::DeleteFollower() 
-{
-	if (SpawnedFollower) {
-		SpawnedFollower->StopFollowing();
 	}
 }
 
@@ -87,6 +74,17 @@ void AEndlessRunnerGameMode::TrySetNewHighScore()
 TArray<FVector> AEndlessRunnerGameMode::GetLaneVectors() 
 {
 	return CurrentSpawnedTile->GetLanes();
+}
+
+UArrowComponent* AEndlessRunnerGameMode::GetTileComponentBeforeChanged() 
+{
+	UArrowComponent** PeekPointer = TileComponentBeforeChangedQueue.Peek();
+	return PeekPointer ? *PeekPointer : nullptr;
+}
+
+void AEndlessRunnerGameMode::PopSpawnPoint() 
+{
+	TileComponentBeforeChangedQueue.Pop();
 }
 
 void AEndlessRunnerGameMode::FindReferenceOfSaveGameHandler() 

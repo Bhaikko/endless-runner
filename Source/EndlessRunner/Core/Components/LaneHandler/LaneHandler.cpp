@@ -9,6 +9,7 @@
 
 #include "EndlessRunner/EndlessRunnerGameMode.h"
 #include "EndlessRunner/EndlessRunnerCharacter.h"
+#include "EndlessRunner/Core/Environment/Follower/Follower.h"
 
 // Sets default values for this component's properties
 ULaneHandler::ULaneHandler()
@@ -99,6 +100,7 @@ void ULaneHandler::LerpBetweenLanes(float DeltaTime)
 void ULaneHandler::UpdateLanes() 
 {
 	Lanes = GameModeReference->GetLaneVectors();
+	RunnerCharacterReference->Jump();
 
 	if (GameModeReference->GetCurrentTileType() == EndlessRunnerEnums::ETilesType::RUNNING) {
 		RunnerCharacterReference->SetWallRunning(false);
@@ -112,6 +114,14 @@ void ULaneHandler::UpdateLanes()
 		} else {
 			RunnerCharacterReference->SetGliding(true);
 			RunnerCharacterReference->SetWallRunning(false);
+
+			if (!SpawnedFollower) {
+				SpawnedFollower = GetWorld()->SpawnActor<AFollower>(
+					FollowerClass,
+					RunnerCharacterReference->GetActorLocation() + FVector(-50.0f, -50.0f, -50.0f),
+					FRotator(0.0f, -90.0f, 0.0f)
+				);
+			}
 		}
 	}
 }

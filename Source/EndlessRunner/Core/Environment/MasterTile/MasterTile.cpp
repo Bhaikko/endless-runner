@@ -69,13 +69,24 @@ void AMasterTile::TileSpawnHandler(
 	if (!CollidedActor) {
 		return;
 	}
-	CollidedActor->UpdateTiles();
 
 	AEndlessRunnerGameMode* GameMode = Cast<AEndlessRunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	GameMode->SpawnTile();
+
 
 	// Increaing Score
 	GameMode->IncreaseScore(1);
+
+	if (
+		GameMode->GetTileComponentBeforeChanged() != nullptr &&
+		GameMode->GetTileComponentBeforeChanged() == SpawnPoint
+	) { 
+		UE_LOG(LogTemp, Warning, TEXT("Inside"));
+		GameMode->PopSpawnPoint();
+		CollidedActor->UpdateTiles();
+
+	}
+
+	GameMode->SpawnTile();
 
 	// Increasing Speed of Character
 	UCharacterMovementComponent* CharacterMovementComponent = Cast<UCharacterMovementComponent>(CollidedActor->GetMovementComponent());

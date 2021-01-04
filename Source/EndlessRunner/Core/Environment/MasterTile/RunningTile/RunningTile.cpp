@@ -91,8 +91,8 @@ void ARunningTile::SpawnObstacleInLane(UArrowComponent* Lane)
 			Lane->GetComponentRotation()
 		);
 	} else if (ChanceOfSpawning > 0.4f && ChanceOfSpawning <= 0.5f) {
-		Road->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		Road->SetVisibility(false);	
+		// Road->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		// Road->SetVisibility(false);	
 	} else if (ChanceOfSpawning > 0.6f && ChanceOfSpawning <= 0.9f) {
 		APickup* SpawnedCoin = GetWorld()->SpawnActor<APickup>(
 			PickupClasses[EPickup::COIN],

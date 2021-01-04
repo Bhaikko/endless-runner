@@ -51,6 +51,8 @@ private:
 
 	void WallDetection(FVector Direction);
 
+	class AFollower* SpawnedFollower;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
 	float ChangeLaneSpeed;
@@ -58,4 +60,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Attributes")
 	float RayTraceRange;
 		
+	UPROPERTY(EditDefaultsOnly, Category = "Follower Config")
+	TSubclassOf<class AFollower> FollowerClass;	
 };
